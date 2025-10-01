@@ -1,102 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/gradient_bg"> <LinearLayout
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="top">
+
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp">
+        <TextView
+            android:id="@+id/club_deportivo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CLUB DEPORTIVO"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="60dp" />
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/login"
-                android:scaleType="centerCrop"/>
+    <LinearLayout
+        android:id="@+id/login_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:padding="24dp"
+        android:background="@drawable/card_bg"
+        android:layout_marginTop="-120dp"
+        android:elevation="4dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#88000000" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bienvenido"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
-        </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_horizontal">
-
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inicia sesión para continuar"
-                android:textSize="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Usuario"
-                android:inputType="text"
-                android:padding="12dp"
-                android:textColor="@color/black"
-                android:textColorHint="#88000000"
-                android:background="@drawable/edittext_fondo"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña"
-                android:inputType="text"
-                android:layout_marginTop="12dp"
-                android:padding="12dp"
-                android:textColor="@color/black"
-                android:textColorHint="#88000000"
-                android:background="@drawable/edittext_fondo"/>
-
-             <Button
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:backgroundTint="@color/black"
-                 android:text="Iniciar Sesión"
-                 android:layout_marginTop="30dp"/>
-
+                android:text="Don't have an account?"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"/>
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="Bloque de prueba"
-                android:gravity="center"
-                android:background="#CCCCCC"
-                android:textSize="20sp"
-                android:layout_marginTop="30dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="Bloque de prueba"
-                android:gravity="center"
-                android:background="#CCCCCC"
-                android:textSize="20sp"
-                android:layout_marginTop="30dp"/>
-
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Sign up"
+                android:textColor="#3F51B5"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Iniciar sesion"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#3F51B5"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="continue with Google"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@android:color/white"
+            android:drawableLeft="@drawable/ic_google"
+            android:drawablePadding="8dp"
+            android:padding="12dp"
+            android:gravity="start|center_vertical"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="continue with Facebook"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@android:color/white"
+            android:drawableLeft="@drawable/ic_facebook"
+            android:drawablePadding="8dp"
+            android:padding="12dp"
+            android:gravity="start|center_vertical"
+            android:textAllCaps="false"
+            android:textSize="16sp"/>
+
     </LinearLayout>
+
+</LinearLayout>
 </ScrollView>
