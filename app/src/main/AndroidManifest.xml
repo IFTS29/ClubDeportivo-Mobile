@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PruebaPrimeraClase"
         tools:targetApi="31">
         <activity
+            android:name=".ListarVencimientosDiaActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegistrarPagosActivity"
             android:exported="false" />
         <activity
