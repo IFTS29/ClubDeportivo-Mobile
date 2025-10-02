@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PruebaPrimeraClase"
         tools:targetApi="31">
         <activity
+            android:name=".NewActiviy"
+            android:exported="false" />
+        <activity
             android:name=".PagarActividadDiariaActivity"
             android:exported="false" />
         <activity
@@ -33,10 +36,9 @@
             android:theme="@style/Theme.PruebaPrimeraClase" />
         <activity
             android:name=".MenuPrincipalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".LoginActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
