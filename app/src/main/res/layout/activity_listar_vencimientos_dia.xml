@@ -22,9 +22,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
-            android:src="@drawable/ic_arrow_back" android:background="@drawable/rounded_button_bg"
+            android:src="@drawable/icon_back"
             android:backgroundTint="#20000000"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             android:contentDescription="Volver"
             android:padding="12dp"/>
 
@@ -33,9 +33,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_menu" android:background="@drawable/rounded_button_bg"
+            android:src="@drawable/icon_menu"
             android:backgroundTint="#20000000"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             android:contentDescription="Menú"
             android:padding="12dp"/>
 
@@ -66,8 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/rounded_edittext_white" android:backgroundTint="@android:color/white"
-            android:drawableStart="@drawable/ic_arrow_down" android:drawablePadding="8dp"
+            android:background="@drawable/edittext_bg" android:backgroundTint="@android:color/white"
+            android:drawableStart="@drawable/icon_back" android:drawablePadding="8dp"
             android:gravity="start|center_vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
