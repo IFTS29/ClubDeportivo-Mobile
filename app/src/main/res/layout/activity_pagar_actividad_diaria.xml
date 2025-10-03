@@ -53,39 +53,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/card_bg">
 
-            <LinearLayout
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:background="@drawable/botton_pay1">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#fffff"
-                    android:gravity="center"
-                    android:text="holaa"
-                    android:textSize="10sp"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/botton_pay2">
+                android:layout_height="wrap_content">
 
+                <!-- falta el icono en el button se ve mas adelante-->
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="#fffff"
                     android:gravity="center"
                     android:text="Elegir actividad"
                     android:textColor="@color/black"
-                    android:textSize="20dp" />
-            </LinearLayout>
+                    android:textSize="25dp" />
+            </GridLayout>
+
 
         </LinearLayout>
 
