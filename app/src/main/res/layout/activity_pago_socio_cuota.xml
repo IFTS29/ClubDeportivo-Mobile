@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_blue_bg">
+    android:background="@drawable/gradient_purple_bg">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,13 +26,14 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
+
             <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon_back"
-                android:background="@drawable/icon_back_bgblue"
+                android:background="@drawable/icon_back_bgpurple"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
                 android:padding="8dp"/>
@@ -40,6 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
+
 
             <!-- Menú hamburgesa-->
             <ImageButton
@@ -55,7 +58,7 @@
         </LinearLayout>
 
 
-        <!-- SECCION PRINCIPAL-->
+        <!-- SECCION DE PAGO-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,128 +68,141 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!--TITULO: Registro de Pagos -->
+            <!--TITULO: Pago Cuota Mensual-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="REGISTRO DE PAGOS"
-                android:textColor="@android:color/white"
+                android:text="PAGO DE CUOTA MENSUAL"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:layout_marginBottom="30dp"
-                android:letterSpacing="0.08"/>
+                android:letterSpacing="0.08"
+                android:background="@null"/>
 
-            <!--SECCION1: Buscador de Cliente-->
+
+            <!--CARD1: Datos del Socio -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/edittext_bg"
-                android:layout_marginBottom="24dp"
-                android:padding="0dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="DNI"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="#E0E0E0"
-                    android:minHeight="48dp"/>
-
-                <!--Input documento Cliente -->
-                <EditText
-                    android:id="@+id/input_Dni"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Documento"
-                    android:inputType="number"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="@android:color/transparent"
-                    android:minHeight="48dp"/>
-            </LinearLayout>
-
-            <!--Boton BUSCAR -->
-            <Button
-                android:id="@+id/btnBuscar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="48dp"
-                android:backgroundTint="@color/azul_oscuro"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:text="Buscar"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp" />
-
-            <!--SECCION2: Datos del Cliente -->
-            <LinearLayout
-                android:id="@+id/client_info_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_bg"
-                android:backgroundTint="#E0E0E0"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:layout_marginBottom="60dp">
+                android:layout_marginBottom="24dp">
 
-                <!--Nombre Cliente-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="APELLIDO NOMBRE"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
-                <!--Documento Cliente-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DOC. XXXXXXX"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:layout_marginBottom="8dp"/>
 
-                <!--ID Cliente -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID XXXXX"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- Fecha inscripcion -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="FECHA INSCRIPCIÓN"
-                    android:textColor="#388E3C"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <!--Tipo Cliente-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SOCIO / NO SOCIO"
-                    android:textColor="#8E24AA"
+                    android:textColor="@color/morado_oscuro2"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
 
+
+
+            <!--CARD2: Datos de la cuota -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_bg"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:layout_marginBottom="60dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PERÍODO:"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SEPT 2025"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nro. XXXXXXX"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ESTADO:"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IMPAGO"
+                        android:textColor="@color/rojo_alerta"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </LinearLayout>
 
             <Space
                 android:layout_width="wrap_content"
@@ -196,21 +212,23 @@
 
             <!-- BOTON COTINUAR -->
             <Button
-                android:id="@+id/btnContinuar"
+                android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/azul_oscuro"
+                android:backgroundTint="@color/btn_morado_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:text="CONTINUAR"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp" />
+                android:layout_marginEnd="25dp"
+                android:text="CONTINUAR"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
+
     </LinearLayout>
+
 </ScrollView>
