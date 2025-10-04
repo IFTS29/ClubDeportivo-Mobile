@@ -7,22 +7,23 @@ import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
-class RegistrarPagosActivity : AppCompatActivity() {
+class PagoSocioCarnetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_registrar_pagos)
+        setContentView(R.layout.activity_pago_socio_carnet)
 
-        val btnBack = findViewById< ImageButton>(R.id.btnBack)
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
         btnBack.setOnClickListener {
+            val intent = Intent(this, PagoSocioExitoActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnImprimir= findViewById<Button>(R.id.btnImprimir)
+        btnImprimir.setOnClickListener {
             val intent = Intent(this, MenuPrincipalActivity::class.java)
             startActivity(intent)
         }
 
-        val btnContinuar = findViewById< Button>(R.id.btnContinuar)
-        btnContinuar.setOnClickListener {
-            val intent = Intent(this, PagoSocioCuotaMensualActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
