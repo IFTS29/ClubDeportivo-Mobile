@@ -13,23 +13,10 @@
         android:theme="@style/Theme.PruebaPrimeraClase"
         tools:targetApi="31">
         <activity
-            android:name=".PagoSocioCarnetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PagoSocioComprobanteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PagoSocioExitoActivity"
-            android:exported="false"
-            android:theme="@style/Theme.PruebaPrimeraClase" />
-        <activity
-            android:name=".PagoSocioMetodosActivity"
-            android:exported="false" />
-        <activity
             android:name=".PagarActividadDiariaActivity"
             android:exported="false" />
         <activity
-            android:name=".PagoSocioCuotaMensualActivity"
+            android:name=".PagarCuotaMensualActivity"
             android:exported="false" />
         <activity
             android:name=".ListarVencimientosDiaActivity"
@@ -40,6 +27,19 @@
         <activity
             android:name=".RegistrarClientesActivity"
             android:exported="false" />
+        <activity
+            android:name=".RegistrarClientes2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrarClientes3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".VencimientoDetalleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Main2Activity"
+            android:exported="false"
+            android:theme="@style/Theme.PruebaPrimeraClase" />
         <activity
             android:name=".MenuPrincipalActivity"
             android:exported="false" /> <!-- <activity -->

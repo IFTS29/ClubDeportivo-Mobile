@@ -20,7 +20,7 @@
         android:letterSpacing="0.05"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
-        />
+    />
 
     <!-- Tarjeta de Login -->
     <LinearLayout
