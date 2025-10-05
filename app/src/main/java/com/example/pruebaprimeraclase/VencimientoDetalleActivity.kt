@@ -48,8 +48,8 @@ class VencimientoDetalleActivity : AppCompatActivity() {
         btnPagar.setOnClickListener {
             Toast.makeText(this, "Procesando pago para socio: $socioId", Toast.LENGTH_LONG).show()
 
-            // Navegar a la pantalla de registro de pagos
-            val intent = Intent(this, RegistrarPagosActivity::class.java)
+            // Navegar a la pantalla de métodos de pago del socio
+            val intent = Intent(this, PagoSocioMetodosActivity::class.java)
             intent.putExtra("socio_id", socioId)
             startActivity(intent)
         }
