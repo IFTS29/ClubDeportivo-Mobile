@@ -19,9 +19,15 @@ class RegistrarPagosActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val btnContinuar = findViewById< Button>(R.id.btnContinuar)
-        btnContinuar.setOnClickListener {
+        val btnContinuarSocio = findViewById< Button>(R.id.btnContinuarSocio)
+        btnContinuarSocio.setOnClickListener {
             val intent = Intent(this, PagoSocioCuotaMensualActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnContinuarNoSocio = findViewById< Button>(R.id.btnContinuarNoSocio)
+        btnContinuarNoSocio.setOnClickListener {
+            val intent = Intent(this, PagoNoSocioDiarioActivity::class.java)
             startActivity(intent)
         }
     }
