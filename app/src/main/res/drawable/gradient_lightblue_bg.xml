@@ -8,3 +8,4 @@
         android:endColor="@color/gradient_lightblue_end"
         android:type="linear" />
 </shape>
+

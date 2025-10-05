@@ -26,7 +26,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         val spinnerTipoCliente = findViewById<Spinner>(R.id.spinnerTipoCliente)
 
         // Configurar el Spinner con las opciones
-        val tiposCliente = arrayOf("Seleccionar tipo", "Socio", "No Socio")
+        val tiposCliente = arrayOf("Seleccionar tipo Cliente", "Socio", "No Socio")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, tiposCliente)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipoCliente.adapter = adapter
