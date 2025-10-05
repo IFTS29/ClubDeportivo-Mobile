@@ -140,7 +140,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-                android:text="OMPROBANTE"
+                android:text="COMPROBANTE"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="18sp"

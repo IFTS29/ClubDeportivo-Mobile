@@ -194,15 +194,15 @@
                 android:layout_weight="1"/>
 
 
-            <!-- BOTON COTINUAR -->
+            <!-- BOTON CONTINUAR -->
             <Button
-                android:id="@+id/btnContinuar"
+                android:id="@+id/btnContinuarSocio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/azul_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:text="CONTINUAR"
+                android:text="CONTINUAR SOCIO"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
@@ -210,6 +210,24 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp" />
+
+            <!-- BOTON CONTINUAR -->
+            <Button
+                android:id="@+id/btnContinuarNoSocio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_oscuro"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:text="CONTINUAR No Socio"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp" />
+
 
         </LinearLayout>
     </LinearLayout>
