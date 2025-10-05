@@ -12,7 +12,7 @@
 
     <!-- COLORES PERSONALIZADOS -->
     <color name="gris_claro">#E8E8E8</color>
-    <color name="verde_exito">#4CAF50</color>
+    <color name="verde_exito">#439E47</color>
     <color name="rojo_alerta">#C62828</color>
     <color name="azul_oscuro">#062A5A</color>
     <color name="azul">#083b80</color>
@@ -21,7 +21,7 @@
     <color name="verde_oscuro">#077831</color>
     <color name="btn_morado_oscuro">#3E065A</color>
     <color name="btn_verde_oscuro">#055623</color>
-
+    <color name="btn_azul_oscuro">#0D3972</color>
 
     <!-- Gradiente Login-Inicio -->
     <color name="gradient_blue_start">#3D2E5C</color>
@@ -29,7 +29,7 @@
 
     <!-- Gradiente Registro Socios y Listado Vencimientos -->
     <color name="gradient_lightblue_start">#999999</color>
-    <color name="gradient_lightblue_end">#0A959F</color>
+    <color name="gradient_lightblue_end">#08919B</color>
 
     <!-- Gradiente Pago Socios -->
     <color name="gradient_purple_start">#999999</color>
