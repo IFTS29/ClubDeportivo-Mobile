@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_purple_bg">
-
+    android:background="@drawable/gradient_green_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +25,13 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
-
             <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon_back"
-                android:background="@drawable/icon_back_bgpurple"
+                android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
                 android:padding="8dp"/>
@@ -42,7 +40,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
-
 
             <!-- Menú hamburgesa-->
             <ImageButton
@@ -57,8 +54,7 @@
 
         </LinearLayout>
 
-
-        <!-- SECCION DE PAGO-->
+        <!-- SECCION MENSAJE EXITO PAGO-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -68,11 +64,11 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!--TITULO: Pago Cuota Mensual-->
+            <!-- TITULO: Pago de Actividad -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PAGO DE CUOTA MENSUAL"
+                android:text="PAGO DE ACTIVIDAD"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -83,125 +79,48 @@
                 android:letterSpacing="0.08"
                 android:background="@null"/>
 
-
-            <!--CARD1: Datos del Socio -->
+            <!--Mensaje de Exito-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="60dp"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="APELLIDO NOMBRE"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:text="¡PAGO EXITOSO!"
+                    android:textColor="@color/verde_exito"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DOC. XXXXXXX"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:text="REGISTRO EN ACTIVIDAD"
+                    android:textColor="@color/verde_exito"
+                    android:textSize="18sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID XXXXX"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:text="BODY PUMP"
+                    android:textColor="@color/verde_exito"
+                    android:textSize="18sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FECHA INSCRIPCIÓN"
-                    android:textColor="@color/morado_oscuro2"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:text="12/09/2025 - 15 HS"
+                    android:textColor="@color/verde_exito"
+                    android:textSize="18sp"/>
 
-            </LinearLayout>
-
-
-
-            <!--CARD2: Datos de la cuota -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="24dp"
-                android:layout_marginBottom="60dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PERÍODO:"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginEnd="8dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SEPT 2025"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nro. XXXXXXX"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"/>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ESTADO:"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginEnd="8dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="IMPAGO"
-                        android:textColor="@color/rojo_alerta"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
             </LinearLayout>
 
             <Space
@@ -210,18 +129,18 @@
                 android:layout_weight="1"/>
 
 
-            <!-- BOTON COTINUAR -->
+            <!-- BOTON COMPROBANTE -->
             <Button
-                android:id="@+id/btnNext"
+                android:id="@+id/btnComprobante"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/btn_morado_oscuro"
+                android:backgroundTint="@color/btn_verde_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-                android:text="CONTINUAR"
+                android:text="OMPROBANTE"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="18sp"

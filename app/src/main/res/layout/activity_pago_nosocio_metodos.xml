@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_purple_bg">
-
+    android:background="@drawable/gradient_green_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +25,13 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
-
             <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon_back"
-                android:background="@drawable/icon_back_bgpurple"
+                android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
                 android:padding="8dp"/>
@@ -42,7 +40,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
-
 
             <!-- Menú hamburgesa-->
             <ImageButton
@@ -68,11 +65,11 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!--TITULO: Pago Cuota Mensual-->
+            <!-- TITULO: PAGO DE ACTIVIDAD -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PAGO DE CUOTA MENSUAL"
+                android:text="PAGO DE ACTIVIDAD"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -83,8 +80,7 @@
                 android:letterSpacing="0.08"
                 android:background="@null"/>
 
-
-            <!--CARD1: Datos del Socio -->
+            <!--CARD1: METODOS PAGO-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,45 +89,66 @@
                 android:padding="24dp"
                 android:layout_marginBottom="24dp">
 
+                <!--Titulo Metodos Pago-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="APELLIDO NOMBRE"
+                    android:text="MÉTODOS DE PAGO:"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="12dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!--Grupo Metodos Pago-->
+                <RadioGroup
+                    android:id="@+id/rgMetodosPago"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DOC. XXXXXXX"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID XXXXX"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    <RadioButton
+                        android:id="@+id/opEfectivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="EFECTIVO"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FECHA INSCRIPCIÓN"
-                    android:textColor="@color/morado_oscuro2"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    <RadioButton
+                        android:id="@+id/opTransferencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TRANSFERENCIA"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_marginBottom="8dp"/>
 
+                    <RadioButton
+                        android:id="@+id/opTarjeta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TARJETA"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+
+                </RadioGroup>
             </LinearLayout>
 
 
-
-            <!--CARD2: Datos de la cuota -->
+            <!--CARD2: CANTIDAD CUOTAS-->
             <LinearLayout
+                android:id="@+id/cardCantidadCuotas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_bg"
@@ -139,68 +156,91 @@
                 android:padding="24dp"
                 android:layout_marginBottom="60dp">
 
+                <!--Titulo Cantidad Cuotas-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CANTIDAD CUOTAS:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- cantidad cuotas = 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PERÍODO:"
+                        android:text="1"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:layout_marginEnd="8dp"/>
-
+                        android:layout_weight="1"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SEPT 2025"
+                        android:text="1 x $150.000"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
-
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginBottom="8dp"/>
 
+                <!-- cantidad cuotas = 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nro. XXXXXXX"
+                        android:text="2"
                         android:textColor="@color/black"
-                        android:textSize="16sp"/>
-
+                        android:textSize="16sp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2 x $75.000"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginBottom="8dp"/>
 
+                <!-- cantidad cuotas = 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ESTADO:"
+                        android:text="3"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:layout_marginEnd="8dp"/>
-
+                        android:layout_weight="1"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IMPAGO"
-                        android:textColor="@color/rojo_alerta"
+                        android:text="3 x $50.000"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -209,19 +249,18 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-
-            <!-- BOTON COTINUAR -->
+            <!-- BOTON PAGAR -->
             <Button
-                android:id="@+id/btnNext"
+                android:id="@+id/btnPagar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/btn_morado_oscuro"
+                android:backgroundTint="@color/btn_verde_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-                android:text="CONTINUAR"
+                android:text="PAGAR"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="18sp"

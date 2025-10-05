@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_purple_bg">
+    android:background="@drawable/gradient_green_bg">
 
 
     <LinearLayout
@@ -26,14 +26,13 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
-
             <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon_back"
-                android:background="@drawable/icon_back_bgpurple"
+                android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
                 android:padding="8dp"/>
@@ -42,7 +41,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
-
 
             <!-- Menú hamburgesa-->
             <ImageButton
@@ -68,11 +66,11 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!--TITULO: Pago Cuota Mensual-->
+            <!--TITULO: Pago de Actividad -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PAGO DE CUOTA MENSUAL"
+                android:text="PAGO DE ACTIVIDAD"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -83,8 +81,7 @@
                 android:letterSpacing="0.08"
                 android:background="@null"/>
 
-
-            <!--CARD1: Datos del Socio -->
+            <!--DATOS DEL NO SOCIO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,15 +119,56 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="FECHA INSCRIPCIÓN"
-                    android:textColor="@color/morado_oscuro2"
+                    android:textColor="@color/btn_verde_oscuro"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
 
+            <!--SELECCIONAR ACTIVIDAD-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/card_bg"
+                android:layout_marginBottom="24dp"
+                android:minHeight="48dp"
+                android:clickable="true"
+                android:focusable="true">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#E0E0E0"
+                    android:gravity="center"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
-            <!--CARD2: Datos de la cuota -->
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icon_down"
+                        android:contentDescription="Icono de desplegable"
+                        app:tint="@color/black" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/inputActiv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="ELEGIR ACTIVIDAD"
+                    android:inputType="none"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@android:color/transparent"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <!--DATOS DE LA ACTIVIDAD -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,6 +177,15 @@
                 android:padding="24dp"
                 android:layout_marginBottom="60dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NOMBRE ACTIVIDAD"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,7 +195,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PERÍODO:"
+                        android:text="FECHA:"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginEnd="8dp"/>
@@ -156,13 +203,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SEPT 2025"
+                        android:text="15/09/2025"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="normal"/>
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,9 +219,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nro. XXXXXXX"
+                        android:text="HORARIO:"
                         android:textColor="@color/black"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="18hs"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="normal"/>
 
                 </LinearLayout>
 
@@ -188,7 +243,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ESTADO:"
+                        android:text="COSTO:"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginEnd="8dp"/>
@@ -196,7 +251,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IMPAGO"
+                        android:text="$ XXXX"
                         android:textColor="@color/rojo_alerta"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -209,13 +264,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-
-            <!-- BOTON COTINUAR -->
+            <!-- BOTON CONTINUAR -->
             <Button
                 android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/btn_morado_oscuro"
+                android:backgroundTint="@color/btn_verde_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
                 android:layout_marginBottom="16dp"

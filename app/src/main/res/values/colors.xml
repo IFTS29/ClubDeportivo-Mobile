@@ -18,14 +18,25 @@
     <color name="azul">#083b80</color>
     <color name="morado_oscuro">#3D2E5C</color>
     <color name="morado_oscuro2">#6A1B9A</color>
+    <color name="verde_oscuro">#077831</color>
     <color name="btn_morado_oscuro">#3E065A</color>
+    <color name="btn_verde_oscuro">#055623</color>
+
 
     <!-- Gradiente Login-Inicio -->
-    <color name="gradient_start">#3D2E5C</color>
-    <color name="gradient_end">#0A959F</color>
+    <color name="gradient_blue_start">#3D2E5C</color>
+    <color name="gradient_blue_end">#0A959F</color>
 
-    <!-- Gradiente Registro Socios -->
-    <color name="gradient_purple_start">#4D108E</color>
-    <color name="gradient_purple_end">#999999</color>
+    <!-- Gradiente Registro Socios y Listado Vencimientos -->
+    <color name="gradient_lightblue_start">#999999</color>
+    <color name="gradient_lightblue_end">#0A959F</color>
+
+    <!-- Gradiente Pago Socios -->
+    <color name="gradient_purple_start">#999999</color>
+    <color name="gradient_purple_end">#4D108E</color>
+
+    <!-- Gradiente Pago No Socios -->
+    <color name="gradient_green_start">#bee1cc</color>
+    <color name="gradient_green_end">#0A9F46</color>
 
 </resources>

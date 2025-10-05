@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_purple_bg">
+    android:background="@drawable/gradient_green_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/icon_back"
-                android:background="@drawable/icon_back_bgpurple"
+                android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
                 android:padding="8dp"/>
@@ -170,14 +170,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nro de Socio:"
+                        android:text="Nro de Cliente no asociado:"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="243"
+                        android:text="1430"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -227,7 +227,7 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-                <!--Vigencia de la cuota -->
+                <!--Nombre Actividad -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -236,14 +236,36 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Vigencia:"
+                        android:text="Actividad:"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="desde 1/06/2025 hasta 30/06/2025"
+                        android:text="Body Pump"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <!--Fecha Actividad -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha Actividad:"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/09/2025 15:00hs"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -259,7 +281,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monto: $ 150.000"
+                        android:text="Monto: $ 30.000"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -278,7 +300,7 @@
                 android:id="@+id/btnImprimir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/btn_morado_oscuro"
+                android:backgroundTint="@color/btn_verde_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
                 android:layout_marginBottom="16dp"

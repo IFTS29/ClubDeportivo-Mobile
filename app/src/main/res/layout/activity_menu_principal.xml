@@ -15,7 +15,7 @@
 
         <!-- BARRA DE NAVEGACION SUPERIOR-->
         <LinearLayout
-            android:id="@+id/navigation_bar"
+            android:id="@+id/nav_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

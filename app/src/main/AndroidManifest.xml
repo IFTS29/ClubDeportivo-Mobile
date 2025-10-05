@@ -13,6 +13,15 @@
         android:theme="@style/Theme.PruebaPrimeraClase"
         tools:targetApi="31">
         <activity
+            android:name=".PagoNoSocioComprobanteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PagoNoSocioExitoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PagoNoSocioMetodosActivity"
+            android:exported="false" />
+        <activity
             android:name=".PagoSocioCarnetActivity"
             android:exported="false" />
         <activity
@@ -26,7 +35,7 @@
             android:name=".PagoSocioMetodosActivity"
             android:exported="false" />
         <activity
-            android:name=".PagarActividadDiariaActivity"
+            android:name=".PagoNoSocioDiarioActivity"
             android:exported="false" />
         <activity
             android:name=".PagoSocioCuotaMensualActivity"
