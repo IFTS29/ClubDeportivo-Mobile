@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/gradient_blue_bg"> <RelativeLayout
+    android:background="@drawable/gradient_blue_bg">
+
+    <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="32dp">
@@ -22,9 +24,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
-            android:src="@drawable/ic_arrow_back" android:background="@drawable/rounded_button_bg"
+            android:src="@drawable/icon_back" android:background="@drawable/rounded_square_button"
             android:backgroundTint="#20000000"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             android:contentDescription="Volver"
             android:padding="12dp"/>
 
@@ -33,9 +35,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_menu" android:background="@drawable/rounded_button_bg"
+            android:src="@drawable/icon_menu" android:background="@drawable/rounded_square_button"
             android:backgroundTint="#20000000"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             android:contentDescription="Menú"
             android:padding="12dp"/>
 
@@ -98,7 +100,7 @@
             android:id="@+id/btnBuscar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="#0D3D5C"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
@@ -107,6 +109,8 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+
 
         <LinearLayout
             android:id="@+id/error_card"
