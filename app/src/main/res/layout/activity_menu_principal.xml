@@ -89,14 +89,15 @@
 
                 <!-- BIENVENIDO-->
                 <TextView
+                    android:id="@+id/tvBienvenida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="32dp"
                     android:layout_marginTop="24dp"
-                    android:text="¡Bienvenido!"
+                    android:text="@string/mensaje_bienvenida"
                     android:textColor="@android:color/black"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
