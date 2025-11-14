@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val dbHelper = DBHelper(this)
 
         // se captura el usuario, contraseña y botón de login
         val etUsuario = findViewById<EditText>(R.id.etUsuario)
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
             if(usuario.isEmpty() || pass.isEmpty()){
                 Toast.makeText(this, "Complete todos los campos.", Toast.LENGTH_LONG).show()
-            } else if(usuario == "admin" && pass == "1234"){
+            } else if(dbHelper.validateUser(usuario, pass)){
                 val intent = Intent(this, MenuPrincipalActivity::class.java)
 
                 // Guarda el valor de la variable usuario (2° parametro) en el Intent,

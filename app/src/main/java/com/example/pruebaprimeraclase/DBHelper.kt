@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 2){
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 4){
 
     override fun onCreate(db: SQLiteDatabase) {
         // 1. Usuarios del Sistema (Admin, Empleado)
@@ -37,7 +37,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
                 """CREATE TABLE clients(
                     clientId INTEGER PRIMARY KEY AUTOINCREMENT,
                     personId INTEGER NOT NULL UNIQUE,
-                    clientType TEXT NOT NULL CHECK(clientType IN ('SOCIO', 'NO_SOCIO')),
+                    clientType TEXT NOT NULL CHECK(clientType IN ('SOCIO', 'NO SOCIO')),
                     clientStatus TEXT CHECK(clientStatus IN ('ACTIVO', 'INACTIVO')), --null para no socio
                     registrationDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                     cardDelivered INTEGER NOT NULL DEFAULT 0,
@@ -156,8 +156,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             (1, 'SOCIO', 'ACTIVO', 1),
             (2, 'SOCIO', 'ACTIVO', 1),
             (3, 'SOCIO', 'INACTIVO', 0),
-            (4, 'NO_SOCIO', NULL, 0),
-            (5, 'NO_SOCIO', NULL, 0)
+            (4, 'NO SOCIO', NULL, 0),
+            (5, 'NO SOCIO', NULL, 0)
         """)
 
         // 4. MEMBRESÍAS (solo para socios - IDs de cliente 1, 2, 3)
@@ -213,5 +213,40 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             (5, 3)
         """)
     }
+
+    fun validateUser(usuario: String, pass: String): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT * FROM users WHERE userName = ? AND password = ? AND active = 1",
+            arrayOf(usuario, pass)
+        )
+        val exists = cursor.count > 0
+        cursor.close()
+        return exists
+    }
+
+    fun getClientInfo(docNumber: String): Pair<Boolean, String?> {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT p.firstName, p.lastName, c.clientId, c.clientType FROM persons p " +
+                    "INNER JOIN clients c ON p.personId = c.personId " +
+                    "WHERE p.docNumber = ?",
+            arrayOf(docNumber)
+        )
+
+        if (cursor.count > 0) {
+            cursor.moveToFirst()
+            val nombre = cursor.getString(0) + " " + cursor.getString(1)
+            val clientId = cursor.getInt(2)
+            val clientType = cursor.getString(3)
+            cursor.close()
+            return Pair(true, "EL CLIENTE $nombre\nYA SE ENCUENTRA\nREGISTRADO COMO\n$clientType ID $clientId")
+        }
+
+        cursor.close()
+        return Pair(false, null)
+    }
+
+
 
 }
