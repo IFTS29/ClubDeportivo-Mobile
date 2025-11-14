@@ -123,7 +123,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/error_card"
+                android:id="@+id/errorCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_bg"
@@ -134,6 +134,7 @@
                 android:layout_marginBottom="60dp">
 
                 <TextView
+                    android:id="@+id/tvErrorMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EL CLIENTE NOMBRE\nYA SE ENCUENTRA\nREGISTRADO COMO\nSOCIO ID XXXXXX"

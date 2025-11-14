@@ -11,6 +11,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -19,6 +20,8 @@ class RegistrarClientesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar_clientes)
+        val dbHelper = DBHelper(this)
+
 
         // Referencias a los elementos del layout
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
@@ -26,7 +29,9 @@ class RegistrarClientesActivity : AppCompatActivity() {
         val btnBuscar = findViewById<Button>(R.id.btnBuscar)
         val btnContinuar = findViewById<Button>(R.id.btnContinuar)
         val etDni = findViewById<EditText>(R.id.etDni)
-        val errorCard = findViewById<LinearLayout>(R.id.error_card)
+        val errorCard = findViewById<LinearLayout>(R.id.errorCard)
+        val tvErrorMessage = findViewById<TextView>(R.id.tvErrorMessage)
+
 
         // Inicialmente ocultar la tarjeta de error
         errorCard.visibility = LinearLayout.GONE
@@ -54,8 +59,10 @@ class RegistrarClientesActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validar si el DNI ya está registrado (mock: 43474085)
-            if (dni == "43474085") {
+            // Validar si el DNI ya está registrado (consulta a base de datos)
+            val (exists, message) = dbHelper.getClientInfo(dni)
+            if (exists) {
+                tvErrorMessage.text = message
                 // Cliente ya registrado - mostrar tarjeta de error
                 errorCard.visibility = LinearLayout.VISIBLE
                 Toast.makeText(this, "El cliente ya está registrado", Toast.LENGTH_SHORT).show()
