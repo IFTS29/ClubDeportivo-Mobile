@@ -30,55 +30,53 @@ class RegistrarClientesActivity : AppCompatActivity() {
         val messageCard = findViewById<LinearLayout>(R.id.messageCard)
         val tvCardMessage = findViewById<TextView>(R.id.tvCardMessage)
 
-
-        // Estado inicial: ocultar la tarjeta de mensaje
+        // --- Estado Inicial ---
+        //  ocultar la tarjeta y deshabilitar botón Continuar
         messageCard.visibility = LinearLayout.GONE
-
-        // 2. Estado inicial: deshabilitar botón "Continuar"
         btnContinue.isEnabled = false
         btnContinue.alpha = 0.5f // Efecto visual de deshabilitado
 
 
-        // Funcionalidad del botón Atrás
+        // --- Navegación ---
+        // BOTÓN Atrás y Menú
         btnBack.setOnClickListener {
             finish()
         }
 
-        // Funcionalidad del botón Menú
         btnMenu.setOnClickListener {
             val intent = Intent(this, MenuPrincipalActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-            finish()
         }
 
-        // Funcionalidad del botón Buscar
+
+        // --- BOTÓN BUSCAR ---
         btnSearch.setOnClickListener {
             val doc = etDoc.text.toString().trim()
 
-            // 1. Resetear
+            // Resetear estado
             btnContinue.isEnabled = false
             btnContinue.alpha = 0.5f
             messageCard.visibility = View.GONE
             etDoc.error = null
 
-            // 2. Validar Documento (usamos la clase UtilidadesValidacion)
-            val errorDocumento = UtilidadesValidacion.validarDocumento(doc)
-
-            if (errorDocumento != null) {
+            // Validar Documento (usamos la clase UtilidadesValidacion)
+            val docError  = UtilidadesValidacion.validarDocumento(doc)
+            if (docError  != null) {
                 // Si hay un error (el resultado NO es null),
-                // lo muestra en el EditText y termina la función.
-                etDoc.error = errorDocumento
+                // muestra el error en el EditText y termina la función.
+                etDoc.error = docError
                 return@setOnClickListener
             }
 
-            // 3. Consultar a la base de datos
+            // Consultar base de datos
             if (dbHelper.validateClientByDoc(doc)) {
 
-                // SÍ EXISTE --> muestra mensaje de ERROR
-                // Llama a la función getClientByDoc
+                // --- EXISTE CLIENTE (Fracaso) ---
+                // LlamaR a función getClientByDoc
                 val client: ClientData? = dbHelper.getClientByDoc(doc)
 
-                // Valida que el objeto no sea nulo
+                // ValidaR que el objeto no sea nulo
                 if (client != null) {
 
                     // Usa los campos que necesita: firstName, lastName, clientType, clientId
@@ -86,7 +84,7 @@ class RegistrarClientesActivity : AppCompatActivity() {
 
                     tvCardMessage.text = clientInfoMessage
 
-                    // Lógica de estilos de error
+                    // Asignar estilos
                     messageCard.backgroundTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(this, R.color.rojo_alerta_claro2_bg)
                     )
@@ -95,7 +93,7 @@ class RegistrarClientesActivity : AppCompatActivity() {
                 }
 
             } else {
-                // NO EXISTE (Éxito)
+                // --- NO EXISTE (Éxito) ---
                 tvCardMessage.text = "Documento disponible.\n\nPuede continuar con el registro."
                 messageCard.backgroundTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(this, R.color.verde_exito_claro_bg)
@@ -110,7 +108,7 @@ class RegistrarClientesActivity : AppCompatActivity() {
 
 
 
-        // Funcionalidad del boton Continuar
+        // --- BOTÓN CONTINUAR ---
         btnContinue.setOnClickListener {
             val dni = etDoc.text.toString().trim()
             val intent = Intent(this, RegistrarClientes2Activity::class.java)
