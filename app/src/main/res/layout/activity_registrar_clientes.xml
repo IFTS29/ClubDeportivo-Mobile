@@ -79,10 +79,10 @@
                 android:padding="0dp">
 
                 <TextView
-                    android:id="@+id/tvDniLabel"
+                    android:id="@+id/tvDocLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="DNI"
+                    android:text="DOC"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -93,7 +93,7 @@
                     android:minHeight="48dp"/>
 
                 <EditText
-                    android:id="@+id/etDni"
+                    android:id="@+id/etDoc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint=""
@@ -102,15 +102,17 @@
                     android:paddingEnd="12dp"
                     android:background="@android:color/transparent"
                     android:minHeight="48dp"
-                    android:labelFor="@+id/tvDniLabel"
-                    android:importantForAccessibility="no" />
+                    android:labelFor="@+id/tvDocLabel"
+                    android:importantForAccessibility="no"
+                    android:textColor="#222222"
+                    android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnBuscar"
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="48dp"
                 android:backgroundTint="@color/btn_azul_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
@@ -123,26 +125,23 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/errorCard"
+                android:id="@+id/messageCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_bg"
-                android:backgroundTint="#E0E0E0"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:padding="24dp"
                 android:layout_marginBottom="60dp">
 
                 <TextView
-                    android:id="@+id/tvErrorMessage"
+                    android:id="@+id/tvCardMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EL CLIENTE NOMBRE\nYA SE ENCUENTRA\nREGISTRADO COMO\nSOCIO ID XXXXXX"
-                    android:textColor="#C62828"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:lineSpacingExtra="4dp"/>
+                    android:lineSpacingExtra="5dp"/>
             </LinearLayout>
 
             <Space
@@ -152,13 +151,13 @@
 
 
             <Button
-                android:id="@+id/btnContinuar"
+                android:id="@+id/btnContinue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/btn_azul_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="32dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:text="CONTINUAR"
