@@ -243,27 +243,48 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     }
 
     // Obtiene datos del Cliente (por su Doc).
-    fun getClientByDoc(docNumber: String): String {
+    fun getClientByDoc(docNumber: String): ClientData? {
         val db = this.readableDatabase
+
+        // Consulta que une la tabla Personas y Clientes, y trae todos los campos
         val cursor = db.rawQuery(
-            "SELECT p.firstName, p.lastName, c.clientId, c.clientType FROM persons p " +
-                    "INNER JOIN clients c ON p.personId = c.personId " +
-                    "WHERE p.docNumber = ?",
+            """SELECT 
+                   p.personId, p.firstName, p.lastName, p.docNumber, p.birthDate, p.address, p.email, p.phoneNumber, p.medicalCertificate,
+                   c.clientId, c.clientType, c.clientStatus, c.registrationDate, c.cardDelivered
+               FROM persons p 
+               INNER JOIN clients c ON p.personId = c.personId 
+               WHERE p.docNumber = ?""",
             arrayOf(docNumber)
         )
 
         if (cursor.moveToFirst()) {
-            val firstName = cursor.getString(0).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
-            val lastName = cursor.getString(1).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
-            val name = "$firstName $lastName"
-            val clientId = cursor.getInt(2)
-            val clientType = cursor.getString(3)
+            // 2. Mapea los datos del cursor a la data class
+            val client = ClientData(
+                // Datos de Persons
+                personId = cursor.getInt(0),
+                firstName = cursor.getString(1).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) },
+                lastName = cursor.getString(2).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) },
+                docNumber = cursor.getString(3),
+                birthDate = cursor.getString(4),
+                address = cursor.getString(5),
+                email = cursor.getString(6),
+                phoneNumber = cursor.getString(7),
+                medicalCertificate = cursor.getInt(8) == 1, // Convierte Int a Boolean
+
+                // Datos de Clients
+                clientId = cursor.getInt(9),
+                clientType = cursor.getString(10),
+                clientStatus = cursor.getString(11), // Obtiene el String (puede ser null)
+                registrationDate = cursor.getString(12),
+                cardDelivered = cursor.getInt(13) == 1 // Convierte Int a Boolean
+            )
+
             cursor.close()
-            return "Cliente registrado\n\nNombre: $name\n\n${clientType.uppercase()} Nro: $clientId"
+            return client // 3. Devuelve el objeto completo
         }
 
         cursor.close()
-        return "Error al obtener datos del cliente."
+        return null // No se encontró el cliente
     }
 
 

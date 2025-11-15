@@ -31,10 +31,10 @@ class RegistrarClientesActivity : AppCompatActivity() {
         val tvCardMessage = findViewById<TextView>(R.id.tvCardMessage)
 
 
-        // Estado incial: ocultar la tarjeta de mensaje
+        // Estado inicial: ocultar la tarjeta de mensaje
         messageCard.visibility = LinearLayout.GONE
 
-        // 2. Estado incial: deshabilitar botón "Continuar"
+        // 2. Estado inicial: deshabilitar botón "Continuar"
         btnContinue.isEnabled = false
         btnContinue.alpha = 0.5f // Efecto visual de deshabilitado
 
@@ -69,35 +69,36 @@ class RegistrarClientesActivity : AppCompatActivity() {
 
             // 3. Consultar a la base de datos
             if (dbHelper.validateClientByDoc(doc)) {
-                // SÍ EXISTE --> Muestra mensaje de ERROR
-                val clientInfoMessage = dbHelper.getClientByDoc(doc)
 
-                tvCardMessage.text = clientInfoMessage
+                // SÍ EXISTE --> muestra mensaje de ERROR
+                // Llama a la función getClientByDoc
+                val client: ClientData? = dbHelper.getClientByDoc(doc)
 
-                // --- ¡CAMBIOS DE ESTILO (ERROR)! ---
-                // 1. Tinta el fondo (preserva bordes) con tu color de alerta
-                messageCard.backgroundTintList = ColorStateList.valueOf(
-                    ContextCompat.getColor(this, R.color.rojo_alerta_claro2_bg) // Usa un rojo claro para fondo
-                )
-                // 2. Pone el TEXTO en tu color de alerta oscuro
-                tvCardMessage.setTextColor(ContextCompat.getColor(this, R.color.rojo_alerta))
+                // Valida que el objeto no sea nulo
+                if (client != null) {
 
-                messageCard.visibility = View.VISIBLE
+                    // Usa los campos que necesita: firstName, lastName, clientType, clientId
+                    val clientInfoMessage = "Cliente registrado\n\nNombre: ${client.firstName} ${client.lastName}\n\n${client.clientType.uppercase()} Nro: ${client.clientId}"
+
+                    tvCardMessage.text = clientInfoMessage
+
+                    // Lógica de estilos de error
+                    messageCard.backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(this, R.color.rojo_alerta_claro2_bg)
+                    )
+                    tvCardMessage.setTextColor(ContextCompat.getColor(this, R.color.rojo_alerta))
+                    messageCard.visibility = View.VISIBLE
+                }
+
             } else {
-                // NO EXISTE --> Muestra mensaje de ÉXITO
-                tvCardMessage.text = "Documento disponible.\nPuede continuar con el registro."
-
-                // --- ¡CAMBIOS DE ESTILO (ÉXITO)! ---
-                // 1. Tinta el fondo (preserva bordes) con un verde claro
+                // NO EXISTE (Éxito)
+                tvCardMessage.text = "Documento disponible.\n\nPuede continuar con el registro."
                 messageCard.backgroundTintList = ColorStateList.valueOf(
-                    ContextCompat.getColor(this, R.color.verde_exito_claro_bg) // Usa un verde claro para fondo
+                    ContextCompat.getColor(this, R.color.verde_exito_claro_bg)
                 )
-                // 2. Pone el TEXTO en tu color de éxito oscuro
                 tvCardMessage.setTextColor(ContextCompat.getColor(this, R.color.verde_exito))
-
                 messageCard.visibility = View.VISIBLE
 
-                // Habilitamos el botón "Continuar"
                 btnContinue.isEnabled = true
                 btnContinue.alpha = 1.0f
             }
