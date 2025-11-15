@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 // Guarda el valor de la variable usuario (2° parametro) en el Intent,
                 // usando la clave "usuario" (1° parametro)
                 intent.putExtra("usuario", usuario)
+                intent.putExtra("SHOW_WELCOME_SNACKBAR", true)
                 startActivity(intent)
             } else{
                 Toast.makeText(this, "Usuario o contraseña incorrectas", Toast.LENGTH_LONG).show()

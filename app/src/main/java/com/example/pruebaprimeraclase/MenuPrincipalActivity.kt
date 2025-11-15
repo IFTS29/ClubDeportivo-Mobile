@@ -25,8 +25,13 @@ class MenuPrincipalActivity : AppCompatActivity() {
         tvBienvenida.text = getString(R.string.mensaje_bienvenida, usuario)
 
         // Aparece mensaje Sesión Iniciada en parte inferior de la página
-        Snackbar.make(findViewById(android.R.id.content), "Sesión iniciada...", Snackbar.LENGTH_LONG)
-            .show()
+        // (revisa si la bandera que enviamos desde MainActivity es 'true')
+        val showSnackbar = intent.getBooleanExtra("SHOW_WELCOME_SNACKBAR", false)
+        // (solo muestra el Snackbar si la bandera es 'true')
+        if (showSnackbar) {
+            Snackbar.make(findViewById(android.R.id.content), "Sesión iniciada...", Snackbar.LENGTH_LONG)
+                .show()
+        }
 
         val btnClose = findViewById<ImageButton>(R.id.btnClose)
         btnClose.setOnClickListener {
@@ -34,6 +39,9 @@ class MenuPrincipalActivity : AppCompatActivity() {
                 .setTitle("Cerrar sesión")
                 .setMessage("¿Desea cerrar la sesión?")
                 .setPositiveButton("Sí") {_,_ ->
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                     finish()
                 }
                 .setNegativeButton("No", null)

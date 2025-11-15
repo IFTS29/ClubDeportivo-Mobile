@@ -3,6 +3,7 @@ package com.example.pruebaprimeraclase
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.util.Locale
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 4){
 
@@ -137,7 +138,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             ('Mariana', '12345', 'EMPLEADO', 1),
             ('empleado2', 'emp456', 'EMPLEADO', 1)
         """)
-        // NOTA: ('admin', '1234', ...) para que coincida con tu MainActivity.kt
+
 
         // 2. PERSONAS (datos personales)
         db.execSQL("""
@@ -150,7 +151,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         """)
 
         // 3. CLIENTES (socios y no socios)
-        // IDs de persona (1, 2, 3) son Socios. (4, 5) son No Socios.
         db.execSQL("""
             INSERT INTO clients (personId, clientType, clientStatus, cardDelivered) VALUES
             (1, 'SOCIO', 'ACTIVO', 1),
@@ -203,7 +203,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             (5, NULL, 3500.00, 'DIARIA', 'TARJETA', 1, '2024-11-11', '2024-11-11', 'PAGADO')
         """)
 
-        // 9. DETALLE DE PAGOS (relaciona pagos DIARIOS con actividades)
+        // 9. DETALLE DE PAGOS
         // El Pago 4 (de 5500) corresponde a las inscripciones 1 y 2 (Spinning + Yoga)
         // El Pago 5 (de 3500) corresponde a la inscripción 3 (Funcional)
         db.execSQL("""
@@ -214,6 +214,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         """)
     }
 
+
+    // Verifica si credenciales de Usuario son correctas
     fun validateUser(usuario: String, pass: String): Boolean {
         val db = this.readableDatabase
         val cursor = db.rawQuery(
@@ -225,7 +227,23 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return exists
     }
 
-    fun getClientInfo(docNumber: String): Pair<Boolean, String?> {
+
+    // Verifica si un cliente existe (por su Doc).
+    fun validateClientByDoc(docNumber: String): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT 1 FROM persons p " +
+                    "INNER JOIN clients c ON p.personId = c.personId " +
+                    "WHERE p.docNumber = ? LIMIT 1",
+            arrayOf(docNumber)
+        )
+        val exists = cursor.moveToFirst()
+        cursor.close()
+        return exists
+    }
+
+    // Obtiene datos del Cliente (por su Doc).
+    fun getClientByDoc(docNumber: String): String {
         val db = this.readableDatabase
         val cursor = db.rawQuery(
             "SELECT p.firstName, p.lastName, c.clientId, c.clientType FROM persons p " +
@@ -234,18 +252,20 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             arrayOf(docNumber)
         )
 
-        if (cursor.count > 0) {
-            cursor.moveToFirst()
-            val nombre = cursor.getString(0) + " " + cursor.getString(1)
+        if (cursor.moveToFirst()) {
+            val firstName = cursor.getString(0).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
+            val lastName = cursor.getString(1).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
+            val name = "$firstName $lastName"
             val clientId = cursor.getInt(2)
             val clientType = cursor.getString(3)
             cursor.close()
-            return Pair(true, "EL CLIENTE $nombre\nYA SE ENCUENTRA\nREGISTRADO COMO\n$clientType ID $clientId")
+            return "Cliente registrado\n\nNombre: $name\n\n${clientType.uppercase()} Nro: $clientId"
         }
 
         cursor.close()
-        return Pair(false, null)
+        return "Error al obtener datos del cliente."
     }
+
 
 
 
