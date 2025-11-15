@@ -61,9 +61,13 @@ class RegistrarClientesActivity : AppCompatActivity() {
             messageCard.visibility = View.GONE
             etDoc.error = null
 
-            // 2. Validar Documento vacío
-            if (doc.isEmpty()) {
-                etDoc.error = "Por favor ingrese un DNI"
+            // 2. Validar Documento (usamos la clase UtilidadesValidacion)
+            val errorDocumento = UtilidadesValidacion.validarDocumento(doc)
+
+            if (errorDocumento != null) {
+                // Si hay un error (el resultado NO es null),
+                // lo muestra en el EditText y termina la función.
+                etDoc.error = errorDocumento
                 return@setOnClickListener
             }
 
