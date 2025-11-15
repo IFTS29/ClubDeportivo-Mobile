@@ -287,6 +287,92 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return null // No se encontró el cliente
     }
 
+    // Obtiene la membresía "vigente" (ACTIVA o VENCIDA) y, SOLO SI APLICA, la "próxima" (PENDIENTE).
+    // Esta función implementa la lógica de negocio de pagos.
+    fun getSocioMembershipList(clientId: Int): MembershipList {
+        val db = this.readableDatabase
+        var current: MembershipData? = null
+        var next: MembershipData? = null
+
+        // 1. Obtener la membresía "vigente".
+        // Es la más reciente que ya ha comenzado (startDate <= hoy) Y no está finalizada.
+        // Esto encontrará 'ACTIVA' o 'VENCIDA'.
+        val cursorCurrent = db.rawQuery(
+            """SELECT membershipId, clientId, startDate, expiryDate, status
+               FROM memberships
+               WHERE clientId = ? AND status != 'FINALIZADA' AND status != 'CANCELADA'
+               AND date(startDate) <= date('now')
+               ORDER BY date(startDate) DESC
+               LIMIT 1""",
+            arrayOf(clientId.toString())
+        )
+
+        if (cursorCurrent.moveToFirst()) {
+            current = MembershipData(
+                membershipId = cursorCurrent.getInt(0),
+                clientId = cursorCurrent.getInt(1),
+                startDate = cursorCurrent.getString(2) ?: "", // Maneja NULL
+                expiryDate = cursorCurrent.getString(3) ?: "", // Maneja NULL
+                monthlyFee = 0.0, // No se usa en este caso
+                status = cursorCurrent.getString(4)
+            )
+        }
+        cursorCurrent.close()
+
+        // 2. Si no encontramos una 'vigente', buscar la 'PENDIENTE' inicial
+        if (current == null) {
+            val cursorPending = db.rawQuery(
+                """SELECT membershipId, clientId, startDate, expiryDate, status
+               FROM memberships
+               WHERE clientId = ? AND status = 'PENDIENTE'
+               ORDER BY date(startDate) ASC 
+               LIMIT 1""",
+                arrayOf(clientId.toString())
+            )
+            if (cursorPending.moveToFirst()) {
+                current = MembershipData(
+                    membershipId = cursorPending.getInt(0),
+                    clientId = cursorPending.getInt(1),
+                    startDate = cursorPending.getString(2) ?: "", // Maneja NULL
+                    expiryDate = cursorPending.getString(3) ?: "", // Maneja NULL
+                    monthlyFee = cursorPending.getDouble(4),
+                    status = cursorPending.getString(5)
+                )
+            }
+            cursorPending.close()
+        }
+
+
+        // 3. Solo buscar la próxima membresía (PENDIENTE futura)
+        //    SI la membresía "vigente" es 'ACTIVA'.
+        if (current != null && current.status == "ACTIVA") {
+
+            val cursorNext = db.rawQuery(
+                """SELECT membershipId, clientId, startDate, expiryDate, monthlyFee, status
+                   FROM memberships
+                   WHERE clientId = ? AND status = 'PENDIENTE'
+                   AND date(startDate) > date('now')
+                   ORDER BY date(startDate) ASC 
+                   LIMIT 1""",
+                arrayOf(clientId.toString())
+            )
+
+            if (cursorNext.moveToFirst()) {
+                next = MembershipData(
+                    membershipId = cursorNext.getInt(0),
+                    clientId = cursorNext.getInt(1),
+                    startDate = cursorNext.getString(2),
+                    expiryDate = cursorNext.getString(3),
+                    monthlyFee = cursorNext.getDouble(4),
+                    status = cursorNext.getString(5)
+                )
+            }
+            cursorNext.close()
+        }
+
+        // Devuelve el contenedor.
+        return MembershipList(current, next)
+    }
 
 
 
