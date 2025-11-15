@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/gradient_lightblue_bg">
 
     <LinearLayout
@@ -33,7 +34,7 @@
                 android:backgroundTint="#20000000"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
-                android:padding="12dp"/>
+                android:padding="15dp"/>
 
             <Space
                 android:layout_width="0dp"
@@ -48,7 +49,7 @@
                 android:background="@drawable/icon_menu_bg"
                 app:tint="@color/black"
                 android:contentDescription="Menú"
-                android:padding="8dp"  />
+                android:padding="15dp"  />
         </LinearLayout>
 
         <LinearLayout
@@ -57,7 +58,7 @@
             android:orientation="vertical"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="28dp"
             android:gravity="center_horizontal">
 
             <TextView
@@ -65,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="REGISTRAR CLIENTES"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="30dp"
                 android:letterSpacing="0.08"/>
@@ -84,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:text="DOC"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:gravity="center_vertical"
                     android:paddingStart="12dp"
@@ -96,7 +97,8 @@
                     android:id="@+id/etDoc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint=""
+                    android:hint="Documento"
+                    android:textSize="14sp"
                     android:inputType="number"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
@@ -121,7 +123,7 @@
                 android:text="Buscar"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -139,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EL CLIENTE NOMBRE\nYA SE ENCUENTRA\nREGISTRADO COMO\nSOCIO ID XXXXXX"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:gravity="center"
                     android:lineSpacingExtra="5dp"/>
             </LinearLayout>
@@ -157,13 +159,13 @@
                 android:backgroundTint="@color/btn_azul_oscuro"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="38dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:text="CONTINUAR"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
