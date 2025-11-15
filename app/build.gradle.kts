@@ -27,11 +27,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8 // Usamos Java 8 para desugaring
+        targetCompatibility = JavaVersion.VERSION_1_8 // Usamos Java 8 para desugaring
+        // Habilitar Desugaring para usar java.time en minSdk 24
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8" // Usamos target 1.8 para el desugaring
     }
     buildFeatures {
         viewBinding = true
@@ -39,6 +41,9 @@ android {
 }
 
 dependencies {
+
+    // Añadir la dependencia Desugaring
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
