@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,21 +15,20 @@ import java.util.Date
 import java.util.Locale
 
 class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivitySelectionListener {
-
     private lateinit var dbHelper: DBHelper
 
-    // --- Referencias a Vistas ---
+    // Referencias a los elementos del layout
     private lateinit var tvClientName: TextView
     private lateinit var tvClientId: TextView
     private lateinit var tvCurrentDate: TextView
     private lateinit var rvActivities: RecyclerView
     private lateinit var tvTotalAmount: TextView
-    private lateinit var btnRegister: Button
+    private lateinit var btnContinue: Button // <-- CAMBIO DE NOMBRE
 
-    // --- Variables de estado ---
+    // Variables de estado
     private lateinit var activityAdapter: ActivityAdapter
     private var currentClient: ClientData? = null
-    private var currentClientDoc: String? = null // Para pasar a la sig. actividad
+    private var currentClientDoc: String? = null
     private var currentTotal: Double = 0.0
     private var currentSelectedIds = listOf<Int>()
     private var allActivities: List<ActivityData> = emptyList()
@@ -40,38 +38,30 @@ class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivit
         enableEdgeToEdge()
         setContentView(R.layout.activity_pago_nosocio_diario)
 
-        // 1. Inicializar DBHelper
         dbHelper = DBHelper(this)
 
-        // 2. Referencias a los Views
-        // --- ESTO ES LO QUE FALTABA EN MI CÓDIGO ANTERIOR ---
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
         val btnMenu = findViewById<ImageButton>(R.id.btnMenu)
-        // --- FIN DE LA CORRECCIÓN ---
-
-        btnRegister = findViewById(R.id.btnRegister)
+        btnContinue = findViewById(R.id.btnContinue) // <-- CAMBIO DE ID
         tvClientName = findViewById(R.id.tvClientName)
         tvClientId = findViewById(R.id.tvClientId)
         tvCurrentDate = findViewById(R.id.tvCurrentDate)
         rvActivities = findViewById(R.id.rvActivities)
         tvTotalAmount = findViewById(R.id.tvTotalAmount)
 
-        // 3. Cargar datos del cliente
+        // Se cargan los datos (No Socio y fecha actual)
         loadClientData()
-
-        // 4. Cargar fecha actual
         loadCurrentDate()
 
-        // 5. Configurar RecyclerView
-        setupRecyclerView() // Ahora depende de que loadClientData() termine primero
-
         // Estado inicial del botón deshabilitado
-        btnRegister.isEnabled = false
-        btnRegister.alpha = 0.5f
+        btnContinue.isEnabled = false
+        btnContinue.alpha = 0.5f
 
-        // --- Lógica de botones ---
+        //  Botones: Volver, Menú
         btnBack.setOnClickListener {
-            finish()
+            val intent = Intent(this, RegistrarPagosActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         btnMenu.setOnClickListener {
@@ -80,66 +70,52 @@ class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivit
             startActivity(intent)
         }
 
-        btnRegister.setOnClickListener {
-            if (currentTotal <= 0 || currentSelectedIds.isEmpty() || currentClient == null) {
-                Toast.makeText(this, "Debe seleccionar al menos una actividad", Toast.LENGTH_SHORT).show()
+        // --- BOTÓN CONTINUAR (Lógica simplificada) ---
+        btnContinue.setOnClickListener {
+            // El chequeo de currentTotal > 0 no es necesario
+            // porque el botón ya está deshabilitado si es 0.
+
+            // Chequeo de seguridad simple
+            if (currentClient == null) {
+                Toast.makeText(this, "Error: No se pudo cargar el cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Construir la lista de nombres de actividades seleccionadas
-            val selectedActivityNames = allActivities
-                .filter { currentSelectedIds.contains(it.activityId) }
-                .map { "- ${it.activityName}" }
-                .joinToString("\n")
+            // Esta pantalla YA NO registra nada.
+            // Solo junta la información y la pasa a la siguiente.
 
-            val totalText = String.format(Locale.US, "%.2f", currentTotal)
-            val dialogMessage = "Confirmar inscripción para:\n\n$selectedActivityNames\n\nTotal a pagar: $ $totalText"
-
-            AlertDialog.Builder(this)
-                .setTitle("Confirmar Inscripción")
-                .setMessage(dialogMessage)
-                .setPositiveButton("Sí, registrar") { _, _ ->
-                    executeRegistration()
-                }
-                .setNegativeButton("No", null)
-                .show()
-        }
-    }
-
-    private fun executeRegistration() {
-        // Llama a la función renombrada
-        val newPaymentId = dbHelper.registerPendingActivities(
-            clientId = currentClient!!.clientId,
-            totalAmount = currentTotal,
-            selectedActivityIds = currentSelectedIds
-        )
-
-        if (newPaymentId != -1L) {
             val intent = Intent(this, PagoNoSocioMetodosActivity::class.java)
 
-            intent.putExtra("PAYMENT_ID", newPaymentId)
+            // 1. Pasa el Total
             intent.putExtra("TOTAL_AMOUNT", currentTotal)
-
-            // --- LÓGICA AGREGADA ---
-            // Pasamos el documento del cliente
+            // 2. Pasa el Documento del Cliente
             intent.putExtra("CLIENT_DOC", currentClientDoc)
-            // ------------------------
+            // 3. Pasa la lista de IDs de actividades seleccionadas
+            intent.putIntegerArrayListExtra("SELECTED_ACTIVITY_IDS", ArrayList(currentSelectedIds))
 
             startActivity(intent)
-        } else {
-            Toast.makeText(this, "Error al registrar la inscripción. Intente de nuevo.", Toast.LENGTH_LONG).show()
         }
     }
 
+    // Se ejecuta cada vez que la pantalla vuelve a estar visible
+    // (por si el usuario vuelve apra atrás desde pantalla de metodos pago)
+    override fun onResume() {
+        super.onResume()
+        // Se refresca la lista de actividades por si algo cambió
+        setupRecyclerView()
+
+        // Se resetea el total (se deshabilita el botón)
+        onSelectionChanged(0.0, emptyList())
+    }
+
+
     private fun loadClientData() {
-        val clientDoc = intent.getStringExtra("CLIENT_DOC")
+        // Obtenemos el CLIENT_DOC solo si es la primera vez (no está seteado)
+        if (currentClientDoc == null) {
+            currentClientDoc = intent.getStringExtra("CLIENT_DOC")
+        }
 
-        // --- LÓGICA AGREGADA ---
-        // Guardamos el documento para usarlo después
-        this.currentClientDoc = clientDoc
-        // ------------------------
-
-        currentClient = clientDoc?.let { dbHelper.getClientByDoc(it) }
+        currentClient = currentClientDoc?.let { dbHelper.getClientByDoc(it) }
 
         if (currentClient != null) {
             tvClientName.text = "${currentClient!!.firstName.uppercase()} ${currentClient!!.lastName.uppercase()}"
@@ -151,30 +127,27 @@ class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivit
     }
 
     private fun loadCurrentDate() {
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val currentDate = sdf.format(Date())
-        tvCurrentDate.text = "FECHA: $currentDate"
+        val formateadorFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaActual = formateadorFecha.format(Date())
+        tvCurrentDate.text = "FECHA: $fechaActual"
     }
 
     private fun setupRecyclerView() {
         allActivities = dbHelper.getAllActivities()
 
-        // --- LÓGICA AGREGADA ---
-        // Obtenemos los IDs de las actividades en las que ya está inscripto HOY
-        // Usamos 'currentClient' que ya fue cargado en loadClientData()
-        val todayRegisteredIds = currentClient?.clientId?.let {
-            dbHelper.getTodayRegisteredActivityIds(it)
-        }?.toSet() ?: emptySet() // Usamos un Set vacío si el cliente es nulo
+        val todayRegisteredIds = if (currentClient != null) {
+            dbHelper.getTodayRegisteredActivityIds(currentClient!!.clientId).toSet()
+        } else {
+            emptySet()
+        }
 
-        // Pasamos la nueva lista de IDs al constructor del Adapter
         activityAdapter = ActivityAdapter(allActivities, todayRegisteredIds, this)
-        // ------------------------
 
         rvActivities.layoutManager = LinearLayoutManager(this)
         rvActivities.adapter = activityAdapter
     }
 
-    // Esta función es OBLIGATORIA
+    // Manejar cambios del estado del botón y monto total
     override fun onSelectionChanged(selectedTotal: Double, selectedIds: List<Int>) {
         currentTotal = selectedTotal
         currentSelectedIds = selectedIds
@@ -184,11 +157,11 @@ class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivit
 
         // Lógica para habilitar/deshabilitar el botón
         if (currentTotal > 0) {
-            btnRegister.isEnabled = true
-            btnRegister.alpha = 1.0f
+            btnContinue.isEnabled = true
+            btnContinue.alpha = 1.0f
         } else {
-            btnRegister.isEnabled = false
-            btnRegister.alpha = 0.5f
+            btnContinue.isEnabled = false
+            btnContinue.alpha = 0.5f
         }
     }
 }
