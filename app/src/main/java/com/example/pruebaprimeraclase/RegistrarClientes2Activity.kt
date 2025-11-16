@@ -15,6 +15,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import java.util.Calendar
+import android.app.DatePickerDialog
 
 class RegistrarClientes2Activity : AppCompatActivity() {
     // (Esto es necesario para que las funciones de validación puedan acceder a ellas)
@@ -30,7 +32,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
     private lateinit var cbAptoMedico: CheckBox
     private lateinit var btnContinuar: Button
 
-
+    private var fechaNacimientoSeleccionada: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +81,16 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         }
 
         btnContinuar.isEnabled = false
+
+        etFechaNacimiento.setOnClickListener {
+            // 2. Llamar a nuestra nueva función para mostrar el calendario
+            showDatePickerDialog { fecha ->
+                // 3. Cuando el usuario elija, ponemos la fecha en el EditText
+                etFechaNacimiento.setText(fecha)
+                // Opcional: guardar la fecha en la variable de la clase
+                fechaNacimientoSeleccionada = fecha
+            }
+        }
 
         //asignar escuchador a los editText
         val textWatcher = object : TextWatcher {
@@ -240,5 +252,26 @@ class RegistrarClientes2Activity : AppCompatActivity() {
 
         // El botón solo se activa si AMBAS condiciones son verdaderas
         btnContinuar.isEnabled = camposTextoCompletos && tipoClienteValido
+    }
+
+    private fun showDatePickerDialog(onDateSelected: (String) -> Unit) {
+        val cal = Calendar.getInstance()
+
+        // Crear el diálogo
+        DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                // El mes se cuenta desde 0 (Enero=0), por eso se suma 1
+                val fechaFormateada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+
+                // Ejecutar la función lambda (onDateSelected)
+                // pasándole la fecha formateada
+                onDateSelected(fechaFormateada)
+            },
+            // Fecha inicial que muestra el calendario (hoy)
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show() // Mostrar el diálogo
     }
 }
