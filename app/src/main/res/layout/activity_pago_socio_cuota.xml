@@ -169,6 +169,7 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
+
                     <TextView
                         android:id="@+id/tvNextId"
                         android:layout_width="wrap_content"
@@ -177,14 +178,20 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginBottom="8dp"/>
+
+                    <!-- ✅ ACTUALIZADO: Permite múltiples líneas para el estado -->
                     <TextView
                         android:id="@+id/tvNextStatus"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ESTADO: PENDIENTE"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:layout_marginBottom="8dp"/>
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:maxLines="2"
+                        android:ellipsize="end"/>
+
                     <TextView
                         android:id="@+id/tvNextDueDate"
                         android:layout_width="wrap_content"

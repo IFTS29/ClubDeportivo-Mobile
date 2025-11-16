@@ -10,13 +10,12 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AlertDialog
 
 
 class PagoSocioCuotaMensualActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
-    private var membershipIdToPay: Int = -1
+    private var membershipToPay: MembershipData? = null // Guardamos el objeto completo
 
     // Guardamos el objeto cliente completo (lo obtenemos usando el DNI)
     private var currentClient: ClientData? = null
@@ -79,26 +78,10 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             finish()
         }
-
         btnMenu.setOnClickListener {
-            // 1. Crear el cuadro de diálogo de confirmación
-            AlertDialog.Builder(this)
-                .setTitle("Volver al Menú")
-                .setMessage("¿Desea volver al menú principal?")
-
-                // 2. Botón Positivo ("Sí") - Ejecuta la acción
-                .setPositiveButton("Sí") { _, _ ->
-                    // Lógica de navegación original:
-                    val intent = Intent(this, MenuPrincipalActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                }
-
-                // 3. Botón Negativo ("No") - No hace nada (simplemente cierra el diálogo)
-                .setNegativeButton("No", null)
-
-                // 4. Mostrar el diálogo
-                .show()
+            val intent = Intent(this, MenuPrincipalActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         // --- 5. CARGAR DATOS ---
@@ -113,10 +96,29 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
 
         // --- 6. BOTÓN CONTINUAR ---
         btnContinue.setOnClickListener {
-            val intent = Intent(this, PagoSocioMetodosActivity::class.java)
-            intent.putExtra("MEMBERSHIP_ID_TO_PAY", membershipIdToPay)
-            startActivity(intent)
+            membershipToPay?.let { membership ->
+                val intent = Intent(this, PagoSocioMetodosActivity::class.java)
+                intent.putExtra("MEMBERSHIP_TO_PAY", membership) // Pasamos el objeto completo
+                intent.putExtra("CLIENT_DATA", currentClient) // También pasamos el cliente
+                startActivityForResult(intent, REQUEST_CODE_PAYMENT)
+            }
         }
+    }
+
+    // Recargar datos cuando volvemos de la pantalla de pago
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PAYMENT && resultCode == RESULT_OK) {
+            // Recargar los datos del cliente y membresía
+            if (currentClient != null) {
+                loadMembershipData()
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PAYMENT = 1001
     }
 
     /**
@@ -173,11 +175,20 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 nextFeeLayout.visibility = View.VISIBLE
 
                 tvNextId.text = "ID CUOTA: ${next.membershipId}"
-                tvNextStatus.text = "ESTADO: PENDIENTE"
+
+                // Mostrar estado más claro del pago
+                if (next.startDate.isEmpty() || next.startDate == "null") {
+                    tvNextStatus.text = "PENDIENTE DE PAGO"
+                    tvNextStatus.setTextColor(ContextCompat.getColor(this, R.color.rojo_alerta))
+                } else {
+                    tvNextStatus.text = "PAGADA - Vigente desde ${DateUtils.formatShortDate(next.startDate)}"
+                    tvNextStatus.setTextColor(ContextCompat.getColor(this, R.color.verde_exito))
+                }
+
                 // ✅ CORREGIDO: Mostrar el vencimiento de la cuota ACTUAL (ACTIVA), no la PENDIENTE
                 tvNextDueDate.text = current.daysRemainingText
 
-                membershipIdToPay = next.membershipId
+                membershipToPay = next // Guardamos el objeto completo
                 btnContinue.isEnabled = true
                 btnContinue.alpha = 1.0f
             } else {
@@ -193,7 +204,7 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
             divider.visibility = View.GONE
             nextFeeLayout.visibility = View.GONE
 
-            membershipIdToPay = current.membershipId
+            membershipToPay = current // Guardamos el objeto completo
             btnContinue.isEnabled = true
             btnContinue.alpha = 1.0f
 
@@ -207,7 +218,7 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
             divider.visibility = View.GONE
             nextFeeLayout.visibility = View.GONE
 
-            membershipIdToPay = current.membershipId
+            membershipToPay = current // Guardamos el objeto completo
             btnContinue.isEnabled = true
             btnContinue.alpha = 1.0f
         }
