@@ -114,20 +114,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp"/>
 
-                    <RadioButton
-                        android:id="@+id/opTransferencia"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TRANSFERENCIA"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -154,7 +141,8 @@
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:layout_marginBottom="60dp">
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
 
                 <!--Titulo Cantidad Cuotas-->
                 <TextView
@@ -166,22 +154,28 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <!-- cantidad cuotas = 1 -->
+                <!-- cantidad cuotas = 1 (5% recargo) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="8dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:layout_weight="1"/> <TextView
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/tvPrecioCuota1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1 x $150.000"
+                        android:text="$52.500"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -192,38 +186,16 @@
                     android:background="@android:color/darker_gray"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- cantidad cuotas = 2 -->
+                <!-- cantidad cuotas = 3 (10% recargo) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2 x $75.000"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginBottom="8dp"/>
-
-                <!-- cantidad cuotas = 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="8dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -232,13 +204,82 @@
                         android:textSize="16sp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/tvPrecioCuota3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 x $50.000"
+                        android:text="3 x $18.333"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- cantidad cuotas = 6 (18% recargo) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/tvPrecioCuota6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6 x $9.833"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- CARD3: TOTAL A PAGAR -->
+            <LinearLayout
+                android:id="@+id/cardTotalPagar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_bg"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:layout_marginBottom="32dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TOTAL A PAGAR:"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/tvTotalPagar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$50.000"
+                        android:textColor="@color/violeta"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <Space
