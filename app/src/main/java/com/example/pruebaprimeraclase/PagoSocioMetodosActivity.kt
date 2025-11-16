@@ -47,8 +47,7 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_pago_socio_metodos)
 
-        // Nota: Asegúrate de que dbHelper esté inicializado correctamente en tu proyecto
-        // dbHelper = DBHelper(this)
+        dbHelper = DBHelper(this)
 
         // --- 1. CAPTURAR MEMBERSHIP Y CLIENT DESDE EL INTENT ---
         membershipToPay = intent.getParcelableExtra("MEMBERSHIP_TO_PAY") ?: run {
@@ -169,6 +168,10 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
 
     /**
      * Actualiza los precios mostrados según las cuotas y recargos
+     * RECARGOS:
+     * - 1 cuota: +5%
+     * - 3 cuotas: +10%
+     * - 6 cuotas: +18%
      */
     private fun updateInstallmentPrices() {
         val formatter = NumberFormat.getCurrencyInstance(Locale("es", "AR"))
@@ -258,10 +261,10 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
     }
 
     /**
-     * Procesa el pago según el métdo seleccionado
+     * Procesa el pago según el método seleccionado
      */
     private fun procesarPago() {
-        // Validar que se haya seleccionado un métdo de pago
+        // Validar que se haya seleccionado un método de pago
         if (!opEfectivo.isChecked && !opTarjeta.isChecked) {
             Toast.makeText(this, "Por favor seleccione un método de pago", Toast.LENGTH_LONG).show()
             return
@@ -291,33 +294,22 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
             .setMessage("¿Desea confirmar el pago de ${tvTotalPagar.text}?")
             .setPositiveButton("Sí") { _, _ ->
                 // Procesar el pago en la base de datos
-                // Nota: Asegúrate de que dbHelper esté inicializado correctamente
-                /*
                 val success = dbHelper.procesarPagoCuotaSocio(
                     membershipId = membershipToPay.membershipId,
                     paymentMethod = paymentMethod,
                     installments = installments,
                     amount = finalAmount
                 )
-                */
-                // Por ahora, simulemos éxito para avanzar con el flujo de Activities
-                val success = true
 
                 if (success) {
-                    // Navegar a pantalla de éxito
+                    // Navegar a pantalla de éxito y cerrar todas las anteriores
                     val intent = Intent(this, PagoSocioExitoActivity::class.java)
-
-                    // Enviar los datos completos a la pantalla de éxito
-                    intent.putExtra("CLIENT_DATA", clientData)
-                    intent.putExtra("MEMBERSHIP_DATA", membershipToPay)
-
-                    // --- SOLUCIÓN AL "VOLVER ATRÁS" ---
-                    // Estas banderas limpian el historial de navegación.
+                    intent.putExtra("CLIENT_ID", clientData.clientId)
+                    intent.putExtra("MEMBERSHIP_ID", membershipToPay.membershipId)
+                    // Limpiar el back stack
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    // -----------------------------------------
-
                     startActivity(intent)
-                    finish() // Cierra esta activity (Metodos)
+                    finish()
                 } else {
                     Toast.makeText(
                         this,
