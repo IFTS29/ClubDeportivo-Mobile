@@ -152,7 +152,6 @@
                         ContextCompat.getColor(this, R.color.gris_claro)
                     )
                     messageCard.visibility = View.VISIBLE
-
                     // Habilitar el botón Continuar
                     btnContinue.isEnabled = true
                     btnContinue.alpha = 1.0f
@@ -173,7 +172,5 @@
                     }
                 }
             }
-
-
         }
     }
