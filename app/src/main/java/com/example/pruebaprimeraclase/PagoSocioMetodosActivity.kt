@@ -20,7 +20,8 @@ import java.util.Locale
 class PagoSocioMetodosActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
-    private var membershipIdToPay: Int = -1
+    private lateinit var membershipToPay: MembershipData
+    private lateinit var clientData: ClientData
     private var baseFee: Double = 0.0
 
     // Referencias a los Views
@@ -48,17 +49,21 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
 
         dbHelper = DBHelper(this)
 
-        // --- 1. CAPTURAR MEMBERSHIP_ID ---
-        membershipIdToPay = intent.getIntExtra("MEMBERSHIP_ID_TO_PAY", -1)
-
-        if (membershipIdToPay == -1) {
+        // --- 1. CAPTURAR MEMBERSHIP Y CLIENT DESDE EL INTENT ---
+        membershipToPay = intent.getParcelableExtra("MEMBERSHIP_TO_PAY") ?: run {
             Toast.makeText(this, "Error: No se pudo cargar la información de la cuota", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
-        // --- 2. OBTENER PRECIO BASE DE LA MEMBRESÍA ---
-        baseFee = getMembershipFee(membershipIdToPay)
+        clientData = intent.getParcelableExtra("CLIENT_DATA") ?: run {
+            Toast.makeText(this, "Error: No se pudo cargar la información del cliente", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        // --- 2. OBTENER PRECIO BASE (ya lo tenemos en el objeto) ---
+        baseFee = membershipToPay.monthlyFee
 
         // --- 3. INICIALIZAR REFERENCIAS ---
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
@@ -162,24 +167,6 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
     }
 
     /**
-     * Obtiene el precio base de la membresía desde la BD
-     */
-    private fun getMembershipFee(membershipId: Int): Double {
-        val db = dbHelper.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT monthlyFee FROM memberships WHERE membershipId = ?",
-            arrayOf(membershipId.toString())
-        )
-
-        var fee = 50000.0 // Valor por defecto
-        if (cursor.moveToFirst()) {
-            fee = cursor.getDouble(0)
-        }
-        cursor.close()
-        return fee
-    }
-
-    /**
      * Actualiza los precios mostrados según las cuotas y recargos
      * RECARGOS:
      * - 1 cuota: +5%
@@ -274,10 +261,10 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
     }
 
     /**
-     * Procesa el pago según el método seleccionado
+     * Procesa el pago según el métdo seleccionado
      */
     private fun procesarPago() {
-        // Validar que se haya seleccionado un método de pago
+        // Validar que se haya seleccionado un métdo de pago
         if (!opEfectivo.isChecked && !opTarjeta.isChecked) {
             Toast.makeText(this, "Por favor seleccione un método de pago", Toast.LENGTH_LONG).show()
             return
@@ -301,16 +288,36 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
             else -> baseFee
         }
 
-        // TODO: Aquí iría la lógica para:
-        // 1. Insertar el pago en la tabla 'payments'
-        // 2. Actualizar el estado de la membresía
-        // 3. Crear la siguiente cuota si corresponde
+        // Mostrar diálogo de confirmación
+        AlertDialog.Builder(this)
+            .setTitle("Confirmar Pago")
+            .setMessage("¿Desea confirmar el pago de ${tvTotalPagar.text}?")
+            .setPositiveButton("Sí") { _, _ ->
+                // Procesar el pago en la base de datos
+                val success = dbHelper.procesarPagoCuotaSocio(
+                    membershipId = membershipToPay.membershipId,
+                    paymentMethod = paymentMethod,
+                    installments = installments,
+                    amount = finalAmount
+                )
 
-        // Por ahora, navegar a pantalla de éxito
-        val intent = Intent(this, PagoSocioExitoActivity::class.java)
-        intent.putExtra("PAYMENT_AMOUNT", finalAmount)
-        intent.putExtra("PAYMENT_METHOD", paymentMethod)
-        intent.putExtra("INSTALLMENTS", installments)
-        startActivity(intent)
+                if (success) {
+                    // Navegar a pantalla de éxito
+                    val intent = Intent(this, PagoSocioExitoActivity::class.java)
+                    intent.putExtra("CLIENT_ID", clientData.clientId)
+                    intent.putExtra("MEMBERSHIP_ID", membershipToPay.membershipId)
+                    startActivity(intent)
+                    setResult(RESULT_OK) // Indicar que el pago fue exitoso
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Error al procesar el pago. Intente nuevamente.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 }
