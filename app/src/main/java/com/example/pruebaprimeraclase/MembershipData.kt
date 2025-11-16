@@ -1,5 +1,7 @@
 package com.example.pruebaprimeraclase
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -8,15 +10,18 @@ import java.util.concurrent.TimeUnit
 
 // Modelo de datos para UNA sola membresía (tabla 'memberships').
 // Contiene lógica para formatear sus propios datos.
+// @Parcelize permite pasar este objeto entre Activities
 
+@Parcelize
 data class MembershipData(
     val membershipId: Int,
     val clientId: Int,
     val startDate: String, // Formato "YYYY-MM-DD"
     val expiryDate: String, // Formato "YYYY-MM-DD"
     val monthlyFee: Double,
-    val status: String
-) {
+    val status: String,
+    val paymentId: Int? = null // <--- ¡CAMPO AGREGADO!
+) : Parcelable {
 
     // Función interna para formatear las fechas a dd/MM/yyyy.
     private fun formatDate(dateString: String): String {
@@ -62,7 +67,7 @@ data class MembershipData(
                 days == -1L -> "Venció ayer"
                 days == 0L -> "Vence hoy"
                 days == 1L -> "Vence mañana"
-                days > 1 -> "Su cuota actual vence en $days días"  // ✅ CORREGIDO
+                days > 1 -> "Su cuota actual vence en $days días"
                 else -> "Vence hoy" // Caso por defecto
             }
         }

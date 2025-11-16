@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_bg"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_marginBottom="12dp">
+
+    <!-- Indicador + ID -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <!-- Indicador visual (círculo) -->
+        <View
+            android:id="@+id/statusIndicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/circle_indicator"/>
+
+        <TextView
+            android:id="@+id/tvMembershipId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CUOTA ID 4"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- Estado -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ESTADO: ACTIVA"
+        android:textColor="@color/verde_exito"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Información adicional (período, fechas, etc) -->
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PERIODO: 01/11/2025 - 01/12/2025"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Mensaje de vencimiento (solo para ACTIVA) -->
+    <TextView
+        android:id="@+id/tvDaysRemaining"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Su cuota actual vence en 15 días"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:visibility="gone"/>
+
+</LinearLayout>
