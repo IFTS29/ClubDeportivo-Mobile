@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/gradient_green_bg">
 
 
@@ -35,7 +36,7 @@
                 android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
             <Space
                 android:layout_width="0dp"
@@ -51,7 +52,7 @@
                 android:background="@drawable/icon_menu_bg"
                 app:tint="@color/black"
                 android:contentDescription="Menú"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
         </LinearLayout>
 
@@ -63,7 +64,7 @@
             android:orientation="vertical"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:paddingTop="20dp"
+            android:paddingTop="28dp"
             android:gravity="center_horizontal">
 
             <!--TITULO: Pago de Actividad -->
@@ -72,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text="PAGO DE ACTIVIDAD"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:paddingTop="12dp"
@@ -91,36 +92,31 @@
                 android:layout_marginBottom="24dp">
 
                 <TextView
+                    android:id="@+id/tvClientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="APELLIDO NOMBRE"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
+                    android:id="@+id/tvClientId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DOC. XXXXXXX"
+                    android:text="ID NO SOCIO: XXXXXXX"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
+                    android:id="@+id/tvClientDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID XXXXX"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FECHA INSCRIPCIÓN"
+                    android:text="FECHA: actual"
                     android:textColor="@color/btn_verde_oscuro"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -162,7 +158,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:background="@android:color/transparent"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:gravity="center_vertical"/>
 
@@ -182,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:text="NOMBRE ACTIVIDAD"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp"/>
 
@@ -197,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:text="FECHA:"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:layout_marginEnd="8dp"/>
 
                     <TextView
@@ -205,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:text="15/09/2025"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="normal"/>
 
                 </LinearLayout>
@@ -221,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:text="HORARIO:"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:layout_marginEnd="8dp"/>
 
                     <TextView
@@ -229,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:text="18hs"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="normal"/>
 
                 </LinearLayout>
@@ -245,7 +241,7 @@
                         android:layout_height="wrap_content"
                         android:text="COSTO:"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:layout_marginEnd="8dp"/>
 
                     <TextView
@@ -253,7 +249,7 @@
                         android:layout_height="wrap_content"
                         android:text="$ XXXX"
                         android:textColor="@color/rojo_alerta"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -278,7 +274,7 @@
                 android:text="CONTINUAR"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
