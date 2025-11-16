@@ -70,19 +70,14 @@ class PagoNoSocioDiarioActivity : AppCompatActivity(), ActivityAdapter.OnActivit
             startActivity(intent)
         }
 
-        // --- BOTÓN CONTINUAR (Lógica simplificada) ---
+        // Boton CONTINUAR
         btnContinue.setOnClickListener {
-            // El chequeo de currentTotal > 0 no es necesario
-            // porque el botón ya está deshabilitado si es 0.
 
-            // Chequeo de seguridad simple
+            // Se verifica el cliente por temas de seguridad
             if (currentClient == null) {
                 Toast.makeText(this, "Error: No se pudo cargar el cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            // Esta pantalla YA NO registra nada.
-            // Solo junta la información y la pasa a la siguiente.
 
             val intent = Intent(this, PagoNoSocioMetodosActivity::class.java)
 

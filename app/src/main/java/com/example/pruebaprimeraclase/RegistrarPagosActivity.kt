@@ -1,20 +1,20 @@
     package com.example.pruebaprimeraclase
 
     import android.content.Intent
-    import android.content.res.ColorStateList
-    import android.graphics.Typeface
-    import android.os.Bundle
-    import android.view.Gravity
-    import android.view.View
-    import android.widget.Button
-    import android.widget.EditText
-    import android.widget.ImageButton
-    import android.widget.LinearLayout
-    import android.widget.TextView
-    import androidx.activity.enableEdgeToEdge
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.core.content.ContextCompat
-    import androidx.appcompat.app.AlertDialog
+import android.content.res.ColorStateList
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 
     class RegistrarPagosActivity : AppCompatActivity() {
@@ -103,7 +103,7 @@
                     // --- NO EXISTE CLIENTE (FRACASO) ---
 
                     // --- 1. LÓGICA DE DATOS (FRACASO) ---
-                    tvStatus.text = "Cliente no registrado.\nVuelva a ingresar un documento."
+                    tvStatus.text = "CLIENTE NO REGISTRADO.\nVUELVA A INGRESAR UN DOCUMENTO."
                     tvStatus.visibility = View.VISIBLE
                     tvStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
 
@@ -120,9 +120,6 @@
                     tvStatus.gravity = Gravity.CENTER           // 2. Centrado
                     tvStatus.setLineSpacing(0f, 1.3f)           // 3. 30% más de espacio entre líneas
 
-                    messageCard.backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(this, R.color.rojo_alerta_claro2_bg)
-                    )
                     messageCard.visibility = View.VISIBLE
 
                 } else {
@@ -164,10 +161,6 @@
                     tvRegDate.setTextColor(ContextCompat.getColor(this, android.R.color.black))
                     tvType.setTextColor(ContextCompat.getColor(this, R.color.violeta))
 
-                    // Mantener fondo neutro
-                    messageCard.backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(this, R.color.gris_claro)
-                    )
                     messageCard.visibility = View.VISIBLE
 
                     // Habilitar el botón Continuar
