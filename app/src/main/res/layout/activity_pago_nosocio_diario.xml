@@ -142,7 +142,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnContinue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -150,7 +150,7 @@
             android:backgroundTint="@color/btn_verde_oscuro"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:text="REGISTRAR"
+            android:text="CONTINUAR"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="16sp"
