@@ -8,14 +8,14 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import android.content.ContentValues
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 5){
+
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 5) {
 
     override fun onCreate(db: SQLiteDatabase) {
         // 1. Usuarios del Sistema (Admin, Empleado)
         db.execSQL(
-            "CREATE TABLE users("+
-                    "userId INTEGER PRIMARY KEY AUTOINCREMENT, "+
+            "CREATE TABLE users(" +
+                    "userId INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "userName TEXT NOT NULL, " +
                     "password TEXT NOT NULL, " +
                     "userRole TEXT NOT NULL CHECK(userRole IN ('ADMIN', 'EMPLEADO'))," +
@@ -24,7 +24,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
         // 2. Personas (datos personales)
         db.execSQL(
-                    """CREATE TABLE persons(
+            """CREATE TABLE persons(
                     personId INTEGER PRIMARY KEY AUTOINCREMENT,  
                     firstName TEXT NOT NULL, 
                     lastName TEXT NOT NULL,
@@ -39,7 +39,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
         // 3. Clientes registrados
         db.execSQL(
-                """CREATE TABLE clients(
+            """CREATE TABLE clients(
                     clientId INTEGER PRIMARY KEY AUTOINCREMENT,
                     personId INTEGER NOT NULL UNIQUE,
                     clientType TEXT NOT NULL CHECK(clientType IN ('SOCIO', 'NO SOCIO')),
@@ -119,7 +119,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
     }
 
-
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS paymentDetails")
         db.execSQL("DROP TABLE IF EXISTS payments")
@@ -135,15 +134,18 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     private fun insertTestData(db: SQLiteDatabase) {
 
         // 1. USUARIOS DEL SISTEMA
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO users (userName, password, userRole, active) VALUES
         ('admin', '1234', 'ADMIN', 1), 
         ('Mariana', '12345', 'EMPLEADO', 1),
         ('Carlos', 'empleado123', 'EMPLEADO', 1)
-    """)
+    """
+        )
 
         // 2. PERSONAS (datos personales)
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO persons (firstName, lastName, docNumber, birthDate, address, email, phoneNumber, medicalCertificate) VALUES
         ('Juan', 'Pérez', '12345678', '1990-05-15', 'Av. Colón 123', 'juan.perez@email.com', '351-1234567', 1),
         ('María', 'González', '23456789', '1985-08-20', 'Calle San Martín 456', 'maria.gonzalez@email.com', '351-2345678', 1),
@@ -157,11 +159,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         ('Valentina', 'Flores', '11223344', '1996-06-12', 'Calle Obispo Trejo 852', 'valentina.flores@email.com', '351-1122334', 0),
         ('Roberto', 'Gómez', '22334455', '1989-03-28', 'Av. Hipólito Yrigoyen 963', 'roberto.gomez@email.com', '351-2233445', 1),
         ('Lucía', 'Castro', '33445566', '1997-11-05', 'Calle Duarte Quirós 159', 'lucia.castro@email.com', '351-3344556', 1)
-    """)
+    """
+        )
 
         // 3. CLIENTES
         // HOY ES: 15 de Noviembre de 2025
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO clients (personId, clientType, clientStatus, cardDelivered) VALUES
         (1, 'SOCIO', 'ACTIVO', 1),    -- Juan: Al día (pagó 01/11, vence 01/12)
         (2, 'SOCIO', 'ACTIVO', 1),    -- María: Al día (pagó 15/10, vence HOY 15/11)
@@ -175,10 +179,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         (10, 'NO SOCIO', NULL, 0),    -- Sofía: No socio
         (11, 'NO SOCIO', NULL, 0),    -- Martín: No socio
         (12, 'NO SOCIO', NULL, 0)     -- Valentina: No socio
-    """)
+    """
+        )
 
         // 4. ACTIVIDADES
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO activities (activityName, activityTime, cost) VALUES
         ('Spinning', '18:00', 3000.00),
         ('Yoga', '19:00', 2500.00),
@@ -187,12 +193,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         ('Pilates', '10:00', 3000.00),
         ('CrossFit', '07:00', 4500.00),
         ('Zumba', '20:30', 2800.00)
-    """)
+    """
+        )
 
         // 5. MEMBRESÍAS (CUOTA = 50000)
         // LÓGICA: Cuando paga se crea ACTIVA + PENDIENTE siguiente
         // HOY: 15 de Noviembre de 2025
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO memberships (clientId, startDate, expiryDate, monthlyFee, status) VALUES
         
         -- Cliente 1 (Juan): Pagó 01/11, vence 01/12 (en 16 días)
@@ -251,10 +259,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         -- Pagó el 08/11, entonces nueva fecha = 08/11 + 30 = 08/12
         (8, '2025-11-08', '2025-12-08', 50000.00, 'ACTIVA'),     -- Pagó fuera de término
         (8, '2025-12-08', '2026-01-07', 50000.00, 'PENDIENTE')   -- Próxima cuota
-    """)
+    """
+        )
 
         // 6. INSCRIPCIONES A ACTIVIDADES (Noviembre 2025)
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO activityRegistrations (clientId, activityId, accessDate) VALUES
         -- No socios
         (9, 1, '2025-11-10'),   -- Diego: Spinning
@@ -269,11 +279,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         -- Socios también pueden inscribirse
         (1, 4, '2025-11-13'),   -- Juan: Natación
         (2, 1, '2025-11-13')    -- María: Spinning
-    """)
+    """
+        )
 
         // 7. PAGOS - Cuotas mensuales
         // IMPORTANTE: Solo hay PAGOS para cuotas en estado ACTIVA o FINALIZADA
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO payments (clientId, membershipId, amount, paymentType, paymentMethod, installments, paymentDate, dueDate, paymentStatus) VALUES
         
         -- Cliente 1 (Juan) - Historial completo
@@ -318,10 +330,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         (8, 29, 50000.00, 'MENSUAL', 'EFECTIVO', 1, '2025-10-05', '2025-10-15', 'PAGADO'),
         -- Membresía 29 venció el 05/11, NO pagó a tiempo
         (8, 30, 50000.00, 'MENSUAL', 'TARJETA', 1, '2025-11-08', '2025-11-18', 'PAGADO')   -- Pagó 3 días tarde
-    """)
+    """
+        )
 
         // 8. PAGOS - Actividades de no socios (Noviembre 2025)
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO payments (clientId, membershipId, amount, paymentType, paymentMethod, installments, paymentDate, dueDate, paymentStatus) VALUES
         
         -- Diego (cliente 9) - Pagó 2 actividades juntas
@@ -336,10 +350,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         
         -- Valentina (cliente 12) - Pago reciente
         (12, NULL, 3000.00, 'DIARIA', 'EFECTIVO', 1, '2025-11-14', '2025-11-14', 'PAGADO')
-    """)
+    """
+        )
 
         // 9. DETALLE DE PAGOS - Relaciona pagos con actividades
-        db.execSQL("""
+        db.execSQL(
+            """
         INSERT INTO paymentDetails (paymentId, activityRegistrationId) VALUES
         -- Pago 23: Diego pagó Spinning + Yoga
         (23, 1),
@@ -358,9 +374,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         
         -- Pago 27: Valentina pagó Spinning
         (27, 8)
-    """)
+    """
+        )
     }
-
 
 
     // Verifica si credenciales de Usuario son correctas
@@ -410,8 +426,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             val client = ClientData(
                 // Datos de Persons
                 personId = cursor.getInt(0),
-                firstName = cursor.getString(1).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) },
-                lastName = cursor.getString(2).lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) },
+                firstName = cursor.getString(1).lowercase()
+                    .replaceFirstChar { it.titlecase(Locale.getDefault()) },
+                lastName = cursor.getString(2).lowercase()
+                    .replaceFirstChar { it.titlecase(Locale.getDefault()) },
                 docNumber = cursor.getString(3),
                 birthDate = cursor.getString(4),
                 address = cursor.getString(5),
@@ -531,7 +549,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         val db = readableDatabase
         val activityList = mutableListOf<ActivityData>()
 
-        val cursor = db.rawQuery("SELECT activityId, activityName, activityTime, cost FROM activities ORDER BY activityTime ASC", null)
+        val cursor = db.rawQuery(
+            "SELECT activityId, activityName, activityTime, cost FROM activities ORDER BY activityTime ASC",
+            null
+        )
 
         if (cursor.moveToFirst()) {
             do {
@@ -573,7 +594,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
 
     // Función púlica que maneja interacción entre las 3 funciones de insert
-    fun registerPendingActivities(clientId: Int, totalAmount: Double, selectedActivityIds: List<Int>): Long {
+    fun registerPendingActivities(
+        clientId: Int,
+        totalAmount: Double,
+        selectedActivityIds: List<Int>
+    ): Long {
         val db = writableDatabase
         db.beginTransaction()
 
@@ -616,7 +641,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     // --- Funciones auxiliares privadas ---
 
     // Insertar en Payments
-    private fun privateInsertPayment(db: SQLiteDatabase, clientId: Int, total: Double, date: String): Long {
+    private fun privateInsertPayment(
+        db: SQLiteDatabase,
+        clientId: Int,
+        total: Double,
+        date: String
+    ): Long {
         val values = ContentValues().apply {
             put("clientId", clientId)
             put("amount", total)
@@ -628,7 +658,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     }
 
     // Insertar en activityRegistrations
-    private fun privateInsertActivityRegistration(db: SQLiteDatabase, clientId: Int, activityId: Int): Long {
+    private fun privateInsertActivityRegistration(
+        db: SQLiteDatabase,
+        clientId: Int,
+        activityId: Int
+    ): Long {
         val values = ContentValues().apply {
             put("clientId", clientId)
             put("activityId", activityId)
@@ -684,8 +718,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
                 throw Exception("Error al insertar en la tabla persons")
             }
 
-    
-    
+
             // --- 2. Insertar en la tabla 'clients' usando el personId ---
             val clientValues = ContentValues().apply {
                 put("personId", personId)
@@ -721,8 +754,268 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             db.endTransaction()
         }
 
-        // Devolver true si todo salió bien, false si hubo un error
+        // Devolver true si tdo salió bien, false si hubo un error
         return success
+
+    }
     // ===== FIN CODIGO nahuew =========
+
+    // ==== Inicio CODIGO mike ====
+    /**
+     * Procesa el pago de una cuota mensual de socio.
+     * Actualiza estados de cuota y cliente, registra el pago y crea la próxima cuota.
+     *
+     * @param membershipId ID de la cuota (debe estar PENDIENTE o VENCIDA).
+     * @param paymentMethod Métdo de pago: "EFECTIVO" o "TARJETA".
+     * @param installments Cantidad de cuotas (1, 3 o 6).
+     * @param amount Monto total a pagar (incluye recargos).
+     * @return true si el pago fue exitoso, false en caso de error.
+     */
+
+
+    fun procesarPagoCuotaSocio(
+        membershipId: Int,
+        paymentMethod: String,
+        installments: Int,
+        amount: Double
+    ): Boolean {
+        val db = this.writableDatabase
+        db.beginTransaction()
+
+        try {
+            // 1. OBTENER DATOS DE LA MEMBRESÍA A PAGAR
+            val cursor = db.rawQuery(
+                """SELECT clientId, status, startDate, expiryDate, monthlyFee 
+               FROM memberships 
+               WHERE membershipId = ?""",
+                arrayOf(membershipId.toString())
+            )
+
+            if (!cursor.moveToFirst()) {
+                cursor.close()
+                return false // No se encontró la membresía
+            }
+
+            val clientId = cursor.getInt(0)
+            val currentStatus = cursor.getString(1)
+            val currentStartDate = cursor.getString(2)
+            val currentExpiryDate = cursor.getString(3)
+            val monthlyFee = cursor.getDouble(4)
+            cursor.close()
+
+            // 2. VALIDAR QUE LA CUOTA ESTÉ EN ESTADO VÁLIDO PARA PAGAR
+            if (currentStatus != "PENDIENTE" && currentStatus != "VENCIDA") {
+                return false // Solo se pueden pagar cuotas PENDIENTES o VENCIDAS
+            }
+
+            // 3. DETERMINAR FECHAS SEGÚN EL ESCENARIO
+            val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                .format(java.util.Date())
+
+            val newStartDate: String
+            val newExpiryDate: String
+
+            if (currentStatus == "PENDIENTE" && currentStartDate == null) {
+                // CASO 1: PRIMERA CUOTA (socio nuevo)
+                newStartDate = today
+                newExpiryDate = addDaysToDate(today, 30)
+
+            } else if (currentStatus == "PENDIENTE") {
+                // CASO 2: CUOTA SIGUIENTE - Pagando ANTES del vencimiento
+                // La fecha ya está calculada en startDate y expiryDate
+                newStartDate = currentStartDate
+                newExpiryDate = currentExpiryDate
+
+            } else { // currentStatus == "VENCIDA"
+                // CASO 3: CUOTA VENCIDA - Pagando DESPUÉS del vencimiento
+                // Nueva fecha = HOY + 30 días
+                newStartDate = today
+                newExpiryDate = addDaysToDate(today, 30)
+            }
+
+            // 4. ACTUALIZAR LA MEMBRESÍA DE PENDIENTE/VENCIDA A ACTIVA
+            db.execSQL(
+                """UPDATE memberships 
+               SET status = 'ACTIVA', 
+                   startDate = ?, 
+                   expiryDate = ?
+               WHERE membershipId = ?""",
+                arrayOf(newStartDate, newExpiryDate, membershipId.toString())
+            )
+
+            // 5. CREAR EL REGISTRO DE PAGO
+            db.execSQL(
+                """INSERT INTO payments (
+                clientId, 
+                membershipId, 
+                amount, 
+                paymentType, 
+                paymentMethod, 
+                installments, 
+                paymentDate, 
+                dueDate, 
+                paymentStatus
+            ) VALUES (?, ?, ?, 'MENSUAL', ?, ?, ?, ?, 'PAGADO')""",
+                arrayOf(
+                    clientId.toString(),
+                    membershipId.toString(),
+                    amount.toString(),
+                    paymentMethod,
+                    installments.toString(),
+                    today,
+                    today
+                )
+            )
+
+            // 6. CREAR LA SIGUIENTE CUOTA PENDIENTE
+            // Solo si la cuota que pagamos NO era VENCIDA
+            if (currentStatus == "PENDIENTE") {
+                val nextStartDate = newExpiryDate
+                val nextExpiryDate = addDaysToDate(newExpiryDate, 30)
+
+                db.execSQL(
+                    """INSERT INTO memberships (
+                    clientId, 
+                    startDate, 
+                    expiryDate, 
+                    monthlyFee, 
+                    status
+                ) VALUES (?, ?, ?, ?, 'PENDIENTE')""",
+                    arrayOf(
+                        clientId.toString(),
+                        nextStartDate,
+                        nextExpiryDate,
+                        monthlyFee.toString()
+                    )
+                )
+            } else {
+                // Si era VENCIDA, primero verificar si ya existe una PENDIENTE
+                val pendingCursor = db.rawQuery(
+                    """SELECT membershipId FROM memberships 
+                   WHERE clientId = ? AND status = 'PENDIENTE'""",
+                    arrayOf(clientId.toString())
+                )
+
+                val hasPending = pendingCursor.moveToFirst()
+                pendingCursor.close()
+
+                // Si NO existe una pendiente, crearla
+                if (!hasPending) {
+                    val nextStartDate = newExpiryDate
+                    val nextExpiryDate = addDaysToDate(newExpiryDate, 30)
+
+                    db.execSQL(
+                        """INSERT INTO memberships (
+                        clientId, 
+                        startDate, 
+                        expiryDate, 
+                        monthlyFee, 
+                        status
+                    ) VALUES (?, ?, ?, ?, 'PENDIENTE')""",
+                        arrayOf(
+                            clientId.toString(),
+                            nextStartDate,
+                            nextExpiryDate,
+                            monthlyFee.toString()
+                        )
+                    )
+                }
+            }
+
+            // 7. ACTUALIZAR ESTADO DEL CLIENTE SI ES PRIMERA CUOTA
+            // Si era la primera cuota (sin startDate inicial), activar cliente y marcar carnet
+            if (currentStatus == "PENDIENTE" && currentStartDate == null) {
+                db.execSQL(
+                    """UPDATE clients 
+                   SET clientStatus = 'ACTIVO', 
+                       cardDelivered = 1
+                   WHERE clientId = ?""",
+                    arrayOf(clientId.toString())
+                )
+            }
+
+            db.setTransactionSuccessful()
+            return true
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            db.endTransaction()
         }
+    }
+
+    /**
+     * Función auxiliar para sumar días a una fecha en formato "yyyy-MM-dd"
+     */
+    private fun addDaysToDate(dateString: String, days: Int): String {
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val date = sdf.parse(dateString)!!
+            val calendar = java.util.Calendar.getInstance()
+            calendar.time = date
+            calendar.add(java.util.Calendar.DAY_OF_MONTH, days)
+            sdf.format(calendar.time)
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+
+    /**
+     * Obtiene el último pago de un cliente
+     */
+    fun getLastPaymentByClient(clientId: Int): PaymentData? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """SELECT paymentId, clientId, membershipId, amount, paymentType, 
+                  paymentMethod, installments, paymentDate, dueDate, paymentStatus
+           FROM payments
+           WHERE clientId = ?
+           ORDER BY paymentDate DESC
+           LIMIT 1""",
+            arrayOf(clientId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            val payment = PaymentData(
+                paymentId = cursor.getInt(0),
+                clientId = cursor.getInt(1),
+                membershipId = if (cursor.isNull(2)) null else cursor.getInt(2),
+                amount = cursor.getDouble(3),
+                paymentType = cursor.getString(4),
+                paymentMethod = cursor.getString(5),
+                installments = cursor.getInt(6),
+                paymentDate = cursor.getString(7),
+                dueDate = cursor.getString(8),
+                paymentStatus = cursor.getString(9)
+            )
+            cursor.close()
+            return payment
+        }
+
+        cursor.close()
+        return null
+    }
+
+    /**
+     * Verifica si el cliente tiene el carnet generado
+     */
+    fun isCardDelivered(clientId: Int): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT cardDelivered FROM clients WHERE clientId = ?",
+            arrayOf(clientId.toString())
+        )
+
+        var delivered = false
+        if (cursor.moveToFirst()) {
+            delivered = cursor.getInt(0) == 1
+        }
+        cursor.close()
+        return delivered
+    }
+
+
+    // ===== Fin CODIGO mike =====
+
 }
