@@ -302,12 +302,10 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
                 )
 
                 if (success) {
-                    // Navegar a pantalla de éxito y cerrar todas las anteriores
+                    // Navegar a pantalla de éxito
                     val intent = Intent(this, PagoSocioExitoActivity::class.java)
                     intent.putExtra("CLIENT_ID", clientData.clientId)
                     intent.putExtra("MEMBERSHIP_ID", membershipToPay.membershipId)
-                    // Limpiar el back stack
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()
                 } else {

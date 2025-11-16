@@ -18,6 +18,7 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
     private lateinit var dbHelper: DBHelper
     private var membershipToPay: MembershipData? = null
     private var currentClient: ClientData? = null
+    private var clientDocNumber: String? = null // ⭐ NUEVO: Guardamos el doc
 
     // Referencias a los Views
     private lateinit var tvClientName: TextView
@@ -33,9 +34,9 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         dbHelper = DBHelper(this)
 
         // --- 1. CAPTURAR DATOS DEL INTENT ---
-        val docNumber = intent.getStringExtra("CLIENT_DOC")
+        clientDocNumber = intent.getStringExtra("CLIENT_DOC") // GUARDAMOS
 
-        if (docNumber == null) {
+        if (clientDocNumber == null) {
             finish()
             return
         }
@@ -70,8 +71,8 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 .show()
         }
 
-        // --- 5. CARGAR DATOS ---
-        loadClientData(docNumber)
+        // --- 5. CARGAR DATOS INICIALES ---
+        loadClientData(clientDocNumber!!)
 
         if (currentClient != null) {
             loadAllMemberships()
@@ -83,7 +84,20 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 val intent = Intent(this, PagoSocioMetodosActivity::class.java)
                 intent.putExtra("MEMBERSHIP_TO_PAY", membership)
                 intent.putExtra("CLIENT_DATA", currentClient)
-                startActivityForResult(intent, REQUEST_CODE_PAYMENT)
+                startActivity(intent)
+            }
+        }
+    }
+
+    // Recargar datos cada vez que la actividad vuelve a ser visible
+    override fun onResume() {
+        super.onResume()
+
+        // Recargar SOLO si ya teníamos un cliente cargado
+        clientDocNumber?.let { doc ->
+            loadClientData(doc)
+            if (currentClient != null) {
+                loadAllMemberships()
             }
         }
     }
@@ -101,7 +115,12 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
     }
 
     private fun loadAllMemberships() {
-        membershipsList.removeAllViews()
+        membershipsList.removeAllViews() // IMPORTANTE: Limpiar lista antes de recargar
+
+        // Resetear estado del botón
+        membershipToPay = null
+        btnContinue.isEnabled = false
+        btnContinue.alpha = 0.5f
 
         val clientId = currentClient!!.clientId
 
@@ -239,17 +258,4 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         membershipsList.addView(textView)
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PAYMENT && resultCode == RESULT_OK) {
-            if (currentClient != null) {
-                loadAllMemberships()
-            }
-        }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PAYMENT = 1001
-    }
 }
