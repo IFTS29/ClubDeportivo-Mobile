@@ -14,10 +14,11 @@ class PagoNoSocioDiarioActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pago_nosocio_diario)
 
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        // --- Navegación ---
         btnBack.setOnClickListener {
-            val intent = Intent(this, RegistrarPagosActivity::class.java)
-            startActivity(intent)
+            finish()
         }
+
 
         val btnNext = findViewById<Button>(R.id.btnNext)
         btnNext.setOnClickListener {
