@@ -62,7 +62,7 @@ data class MembershipData(
                 days == -1L -> "Venció ayer"
                 days == 0L -> "Vence hoy"
                 days == 1L -> "Vence mañana"
-                days > 1 -> "Su próxima cuota vence en $days días"
+                days > 1 -> "Su cuota actual vence en $days días"  // ✅ CORREGIDO
                 else -> "Vence hoy" // Caso por defecto
             }
         }

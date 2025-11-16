@@ -43,7 +43,7 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
 
         dbHelper = DBHelper(this)
 
-        // --- 1. CAPTURAR DATOS DEL INTENT (¡CORREGIDO!) ---
+        // --- 1. CAPTURAR DATOS DEL INTENT ---
         // Recibe el DNI de la pantalla anterior, usando la clave "CLIENT_DOC"
         val docNumber = intent.getStringExtra("CLIENT_DOC")
 
@@ -102,7 +102,6 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
     }
 
     /**
-     * ¡FUNCIÓN CORREGIDA!
      * Carga los datos del socio en la Card 1.
      * USA LA FUNCIÓN 'getClientByDoc' (que ya existe en tu DBHelper)
      */
@@ -114,7 +113,6 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
             tvClientName.text = "${currentClient!!.firstName.uppercase()} ${currentClient!!.lastName.uppercase()}"
             tvClientId.text = "ID SOCIO ${currentClient!!.clientId}"
         } else {
-            // Esto corrige el "ERROR ERROR"
             tvClientName.text = "CLIENTE NO ENCONTRADO"
             tvClientId.text = "Error"
         }
@@ -158,7 +156,8 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
 
                 tvNextId.text = "ID CUOTA: ${next.membershipId}"
                 tvNextStatus.text = "ESTADO: PENDIENTE"
-                tvNextDueDate.text = next.daysRemainingText
+                // ✅ CORREGIDO: Mostrar el vencimiento de la cuota ACTUAL (ACTIVA), no la PENDIENTE
+                tvNextDueDate.text = current.daysRemainingText
 
                 membershipIdToPay = next.membershipId
                 btnContinue.isEnabled = true
