@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
+import android.widget.Toast
 
 class RegistrarClientes3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,10 @@ class RegistrarClientes3Activity : AppCompatActivity() {
 
         // Obtener datos pasados desde la pantalla anterior
         val dni = intent.getStringExtra("dni") ?: ""
+        val nombre = intent.getStringExtra("nombre")
+        val apellido = intent.getStringExtra("apellido")
         val tipoCliente = intent.getStringExtra("tipo_cliente") ?: ""
+
 
         // Referencias a los elementos del layout
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
@@ -77,4 +81,5 @@ class RegistrarClientes3Activity : AppCompatActivity() {
             tvSocioNumero.text = "CLIENTE NO SOCIO"
         }
     }
+
 }

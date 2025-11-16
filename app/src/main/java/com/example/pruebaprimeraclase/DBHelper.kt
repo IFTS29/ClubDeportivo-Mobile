@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.util.Locale
 import android.content.ContentValues
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 5){
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 6){
 
     override fun onCreate(db: SQLiteDatabase) {
         // 1. Usuarios del Sistema (Admin, Empleado)
@@ -518,7 +518,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return MembershipList(current, next)
     }
 
-    // ====== CODIGO nahuw ======
+    // ====== CODIGO nahuew ======
 
 
     fun addClient(
@@ -563,15 +563,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
                 put("personId", personId)
                 put("clientType", clientType)
 
-                // Lógica de negocio:
-                // Si es SOCIO, su estado inicial es ACTIVO (o INACTIVO si debe pagar primero)
-                // Si es NO SOCIO, el estado es NULL (como definiste en tu schema)
                 if (clientType == "SOCIO") {
-                    // Puedes ponerlo "INACTIVO" hasta que pague la 1ra cuota,
-                    // o "ACTIVO" si la inscripción ya lo activa. Usaremos "ACTIVO" por simpleza.
+
                     put("clientStatus", "ACTIVO")
                 }
-                // registrationDate y cardDelivered usan sus valores DEFAULT, no es necesario ponerlos
             }
 
             val clientId = db.insert("clients", null, clientValues)
