@@ -27,6 +27,7 @@
     <color name="btn_morado_oscuro">#3E065A</color>
     <color name="btn_verde_oscuro">#055623</color>
     <color name="btn_azul_oscuro">#0D3972</color>
+    <color name="violeta_claro">#E1D5E7</color>
 
     <!-- Gradiente Login-Inicio -->
     <color name="gradient_blue_start">#3D2E5C</color>

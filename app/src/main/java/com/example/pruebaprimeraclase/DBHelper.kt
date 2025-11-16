@@ -8,7 +8,7 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+import android.content.ContentValues
 class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 5){
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -523,7 +523,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     }
 
 
-
     // ==========================
     // ====== CODIGO MARIANA ======
 
@@ -645,8 +644,85 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         }
         return db.insert("paymentDetails", null, values)
     }
+    // ====== CODIGO nahuw ======
 
-    // ===== FIN CODIGO MARIANA =========
 
+    fun addClient(
+        firstName: String,
+        lastName: String,
+        docNumber: String,
+        birthDate: String, // Formato "YYYY-MM-DD"
+        address: String,
+        email: String,
+        phoneNumber: String,
+        medicalCertificate: Boolean,
+        clientType: String // "SOCIO" o "NO SOCIO"
+    ): Boolean {
 
+        val db = this.writableDatabase
+        db.beginTransaction()
+        var success = false
+
+        try {
+            // --- 1. Insertar en la tabla 'persons' ---
+            val personValues = ContentValues().apply {
+                put("firstName", firstName)
+                put("lastName", lastName)
+                put("docNumber", docNumber)
+                put("birthDate", birthDate) // Asumimos que la fecha ya está en formato YYYY-MM-DD
+                put("address", address)
+                put("email", email)
+                put("phoneNumber", phoneNumber)
+                put("medicalCertificate", if (medicalCertificate) 1 else 0)
+            }
+
+            // insert() devuelve el ID de la fila nueva, o -1 si hubo un error
+            val personId = db.insert("persons", null, personValues)
+
+            if (personId == -1L) {
+                // Si falla la inserción de persona, no continuar
+                throw Exception("Error al insertar en la tabla persons")
+            }
+
+    
+    
+            // --- 2. Insertar en la tabla 'clients' usando el personId ---
+            val clientValues = ContentValues().apply {
+                put("personId", personId)
+                put("clientType", clientType)
+
+                // Lógica de negocio:
+                // Si es SOCIO, su estado inicial es ACTIVO (o INACTIVO si debe pagar primero)
+                // Si es NO SOCIO, el estado es NULL (como definiste en tu schema)
+                if (clientType == "SOCIO") {
+                    // Puedes ponerlo "INACTIVO" hasta que pague la 1ra cuota,
+                    // o "ACTIVO" si la inscripción ya lo activa. Usaremos "ACTIVO" por simpleza.
+                    put("clientStatus", "ACTIVO")
+                }
+                // registrationDate y cardDelivered usan sus valores DEFAULT, no es necesario ponerlos
+            }
+
+            val clientId = db.insert("clients", null, clientValues)
+
+            if (clientId == -1L) {
+                // Si falla la inserción de cliente, hacer rollback
+                throw Exception("Error al insertar en la tabla clients")
+            }
+
+            // Si ambas inserciones fueron exitosas, marcar la transacción como exitosa
+            db.setTransactionSuccessful()
+            success = true
+
+        } catch (e: Exception) {
+            // En caso de error, la transacción no se marcará como exitosa y se revertirá
+            // (Puedes loggear el error e.message)
+        } finally {
+            // Finalizar la transacción. Se comitea si fue successful, o se revierte si no.
+            db.endTransaction()
+        }
+
+        // Devolver true si todo salió bien, false si hubo un error
+        return success
+    // ===== FIN CODIGO nahuew =========
+        }
 }

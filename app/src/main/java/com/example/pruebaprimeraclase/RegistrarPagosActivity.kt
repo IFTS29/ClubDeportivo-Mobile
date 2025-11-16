@@ -14,6 +14,8 @@
     import androidx.activity.enableEdgeToEdge
     import androidx.appcompat.app.AppCompatActivity
     import androidx.core.content.ContextCompat
+    import androidx.appcompat.app.AlertDialog
+
 
     class RegistrarPagosActivity : AppCompatActivity() {
 
@@ -56,9 +58,24 @@
             }
 
             btnMenu.setOnClickListener {
-                val intent = Intent(this, MenuPrincipalActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                startActivity(intent)
+                // 1. Crear el cuadro de diálogo de confirmación
+                AlertDialog.Builder(this)
+                    .setTitle("Volver al Menú")
+                    .setMessage("¿Desea volver al menú principal?")
+
+                    // 2. Botón Positivo ("Sí") - Ejecuta la acción
+                    .setPositiveButton("Sí") { _, _ ->
+                        // Lógica de navegación original:
+                        val intent = Intent(this, MenuPrincipalActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    }
+
+                    // 3. Botón Negativo ("No") - No hace nada (simplemente cierra el diálogo)
+                    .setNegativeButton("No", null)
+
+                    // 4. Mostrar el diálogo
+                    .show()
             }
 
             // --- BOTÓN BUSCAR ---
