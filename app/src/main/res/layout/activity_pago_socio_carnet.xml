@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/gradient_purple_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+        <!-- BARRA DE NAVEGACION SUPERIOR-->
+        <LinearLayout
+            android:id="@+id/nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Boton Volver -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_back"
+                android:background="@drawable/icon_back_bgpurple"
+                app:tint="@android:color/white"
+                android:contentDescription="Volver"
+                android:padding="8dp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <!-- Menú hamburgesa-->
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_menu"
+                android:background="@drawable/icon_menu_bg"
+                app:tint="@color/black"
+                android:contentDescription="Menú"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+
+        <!-- SECCION DE COMPROBANTE-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:paddingTop="20dp"
+            android:gravity="center_horizontal">
+
+            <!-- TITULO: Carnet Socio -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CARNET SOCIO"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:layout_marginBottom="30dp"
+                android:letterSpacing="0.08"
+                android:background="@null"/>
+
+            <!-- Seccion inferior carnet-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="420dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_bg"
+                    android:paddingTop="150dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp">
+
+                    <!-- Numero Socio -->
+                    <TextView
+                        android:id="@+id/txt_nro_socio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nro de Socio: 2"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginStart="24dp"/>
+
+                    <!-- Fecha vigencia cuota -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="32dp">
+
+                        <TextView
+                            android:id="@+id/txt_fecha_inicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Desde 1/06/2025"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="24dp"/>
+
+                        <TextView
+                            android:id="@+id/txt_fecha_fin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hasta 1/06/2026"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:layout_gravity="end"/>
+                    </LinearLayout>
+
+                    <!-- Firma -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="126dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/img_firma"
+                            android:layout_width="150dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="end"
+                            android:contentDescription="Firma del Socio"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img_firma" />
+
+                        <View
+                            android:layout_width="150dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="end"
+                            android:background="@android:color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="55dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="FIRMA"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <!-- Codigo barras -->
+                        <ImageView
+                            android:id="@+id/img_codigo_barra"
+                            android:layout_width="143dp"
+                            android:layout_height="37dp"
+                            android:layout_gravity="end"
+                            android:contentDescription="Código de barras"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img_codigo_barra" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <!-- ENCABEZADO carnet -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="0dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="#0A959F"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <!-- Logo y Nombre club-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <!-- Logo Club-->
+                            <ImageView
+                                android:id="@+id/logo_club"
+                                android:layout_width="94dp"
+                                android:layout_height="46dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="5dp"
+                                android:contentDescription="Logo del Club Deportivo"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/logo_club" />
+
+                            <!-- Nombre Club-->
+                            <TextView
+                                android:id="@+id/txt_club"
+                                android:layout_width="wrap_content"
+                                android:layout_height="29dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="5dp"
+                                android:text="Club Deportivo"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp"
+                                android:textStyle="bold"  />
+
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <!-- Foto Perfil-->
+                    <ImageView
+                        android:id="@+id/img_perfil"
+                        android:layout_width="110dp"
+                        android:layout_height="130dp"
+                        android:src="@drawable/img_perfil"
+                        android:contentDescription="Foto de perfil del socio"
+                        android:scaleType="centerCrop"
+                        android:background="@android:color/white"
+                        android:padding="4dp"
+                        android:layout_marginTop="-65dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_gravity="start"/>
+                </LinearLayout>
+
+                <!-- Nombre Socio-->
+                <TextView
+                    android:id="@+id/txt_nombre_socio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mario Domínguez"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginBottom="270dp"
+                    android:layout_marginEnd="16dp"/>
+            </FrameLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <!-- BOTON IMPRIMIR -->
+            <Button
+                android:id="@+id/btnImprimir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/btn_morado_oscuro"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:text="IMPRIMIR"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
