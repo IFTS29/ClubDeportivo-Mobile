@@ -1,8 +1,12 @@
 package com.example.pruebaprimeraclase
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 5){
@@ -518,8 +522,129 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return MembershipList(current, next)
     }
 
+
+
+    // ==========================
     // ====== CODIGO MARIANA ======
 
+    // Obtener las actividades diarias del gimnasio
+    fun getAllActivities(): List<ActivityData> {
+        val db = readableDatabase
+        val activityList = mutableListOf<ActivityData>()
+
+        val cursor = db.rawQuery("SELECT activityId, activityName, activityTime, cost FROM activities ORDER BY activityTime ASC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val activity = ActivityData(
+                    activityId = cursor.getInt(0),
+                    activityName = cursor.getString(1),
+                    activityTime = cursor.getString(2),
+                    cost = cursor.getDouble(3)
+                )
+                activityList.add(activity)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return activityList
+    }
+
+
+    // Obtener lista de IDs de actividades
+    // en las que un cliente ya se ha inscripto el día de hoy.
+    fun getTodayRegisteredActivityIds(clientId: Int): List<Int> {
+        val db = readableDatabase
+        val ids = mutableListOf<Int>()
+
+        val cursor = db.rawQuery(
+            """SELECT activityId FROM activityRegistrations
+               WHERE clientId = ? AND date(accessDate) = date('now')""",
+            arrayOf(clientId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                ids.add(cursor.getInt(0))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return ids
+    }
+
+
+    // Función púlica que maneja interacción entre las 3 funciones de insert
+    fun registerPendingActivities(clientId: Int, totalAmount: Double, selectedActivityIds: List<Int>): Long {
+        val db = writableDatabase
+        db.beginTransaction()
+
+        var newPaymentId: Long = -1L
+
+        try {
+            // Crear el PAGO
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val currentDate = sdf.format(Date())
+            newPaymentId = privateInsertPayment(db, clientId, totalAmount, currentDate)
+            if (newPaymentId == -1L) throw Exception("Error al crear Payment")
+
+            // Crear las INSCRIPCIONES
+            val newRegistrationIds = mutableListOf<Long>()
+            for (activityId in selectedActivityIds) {
+                val regId = privateInsertActivityRegistration(db, clientId, activityId)
+                if (regId == -1L) throw Exception("Error al crear ActivityRegistration")
+                newRegistrationIds.add(regId)
+            }
+
+            // Vincular
+            for (regId in newRegistrationIds) {
+                val detailId = privateInsertPaymentDetail(db, newPaymentId, regId)
+                if (detailId == -1L) throw Exception("Error al crear PaymentDetail")
+            }
+
+            db.setTransactionSuccessful() // éxito
+
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error en transacción registerPendingActivities", e)
+            newPaymentId = -1L // devolver error
+        } finally {
+            db.endTransaction()
+        }
+
+        return newPaymentId
+    }
+
+
+    // --- Funciones auxiliares privadas ---
+
+    // Insertar en Payments
+    private fun privateInsertPayment(db: SQLiteDatabase, clientId: Int, total: Double, date: String): Long {
+        val values = ContentValues().apply {
+            put("clientId", clientId)
+            put("amount", total)
+            put("paymentType", "DIARIA")
+            put("dueDate", date)
+            put("paymentStatus", "PENDIENTE")
+        }
+        return db.insert("payments", null, values)
+    }
+
+    // Insertar en activityRegistrations
+    private fun privateInsertActivityRegistration(db: SQLiteDatabase, clientId: Int, activityId: Int): Long {
+        val values = ContentValues().apply {
+            put("clientId", clientId)
+            put("activityId", activityId)
+        }
+        return db.insert("activityRegistrations", null, values)
+    }
+
+    // Insertar en paymentDetails
+    private fun privateInsertPaymentDetail(db: SQLiteDatabase, paymentId: Long, regId: Long): Long {
+        val values = ContentValues().apply {
+            put("paymentId", paymentId)
+            put("activityRegistrationId", regId)
+        }
+        return db.insert("paymentDetails", null, values)
+    }
 
     // ===== FIN CODIGO MARIANA =========
 
