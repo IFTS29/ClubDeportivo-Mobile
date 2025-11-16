@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 9) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 10) {
 
     override fun onCreate(db: SQLiteDatabase) {
         // 1. Usuarios del Sistema (Admin, Empleado)

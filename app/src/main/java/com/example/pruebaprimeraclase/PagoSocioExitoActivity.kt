@@ -71,8 +71,10 @@ class PagoSocioExitoActivity : AppCompatActivity() {
         // Botón Carnet
         btnCarnet.setOnClickListener {
             val intent = Intent(this, PagoSocioCarnetActivity::class.java)
-            // Pasamos los datos del cliente al carnet
+            // Pasa CLIENT_DATA
             intent.putExtra("CLIENT_DATA", clientData)
+            // ¡¡Y también pasa MEMBERSHIP_DATA!!
+            intent.putExtra("MEMBERSHIP_DATA", membershipData)
             startActivity(intent)
         }
 
