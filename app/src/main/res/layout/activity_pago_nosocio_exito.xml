@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/gradient_green_bg">
 
     <LinearLayout
@@ -13,7 +14,6 @@
         android:orientation="vertical"
         android:paddingBottom="32dp">
 
-        <!-- BARRA DE NAVEGACION SUPERIOR-->
         <LinearLayout
             android:id="@+id/nav_bar"
             android:layout_width="match_parent"
@@ -25,7 +25,6 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
-            <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
@@ -34,14 +33,13 @@
                 android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
-            <!-- Menú hamburgesa-->
             <ImageButton
                 android:id="@+id/btnMenu"
                 android:layout_width="48dp"
@@ -50,11 +48,10 @@
                 android:background="@drawable/icon_menu_bg"
                 app:tint="@color/black"
                 android:contentDescription="Menú"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
         </LinearLayout>
 
-        <!-- SECCION MENSAJE EXITO PAGO-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -64,13 +61,12 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!-- TITULO: Pago de Actividad -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PAGO DE ACTIVIDAD"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:paddingTop="12dp"
@@ -79,7 +75,6 @@
                 android:letterSpacing="0.08"
                 android:background="@null"/>
 
-            <!--Mensaje de Exito-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,33 +88,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¡PAGO EXITOSO!"
-                    android:textColor="@color/verde_exito"
-                    android:textSize="20sp"
+                    android:textColor="@color/verde"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
+                    android:id="@+id/tvReceiptDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="REGISTRO EN ACTIVIDAD"
-                    android:textColor="@color/verde_exito"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="16/11/2025"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BODY PUMP"
-                    android:textColor="@color/verde_exito"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="REGISTRO A ACTIVIDADES:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llActivityList"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="12/09/2025 - 15 HS"
-                    android:textColor="@color/verde_exito"
-                    android:textSize="18sp"/>
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"/>
 
             </LinearLayout>
 
@@ -129,9 +126,8 @@
                 android:layout_weight="1"/>
 
 
-            <!-- BOTON COMPROBANTE -->
             <Button
-                android:id="@+id/btnComprobante"
+                android:id="@+id/btnReceipt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/btn_verde_oscuro"
@@ -143,7 +139,7 @@
                 android:text="COMPROBANTE"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
