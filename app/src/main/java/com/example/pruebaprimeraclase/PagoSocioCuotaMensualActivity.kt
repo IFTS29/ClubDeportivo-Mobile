@@ -18,6 +18,7 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
     private lateinit var dbHelper: DBHelper
     private var membershipToPay: MembershipData? = null
     private var currentClient: ClientData? = null
+    private var clientDocNumber: String? = null // ⭐ NUEVO: Guardamos el doc
 
     // Referencias a los Views
     private lateinit var tvClientName: TextView
@@ -33,9 +34,9 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         dbHelper = DBHelper(this)
 
         // --- 1. CAPTURAR DATOS DEL INTENT ---
-        val docNumber = intent.getStringExtra("CLIENT_DOC")
+        clientDocNumber = intent.getStringExtra("CLIENT_DOC") // GUARDAMOS
 
-        if (docNumber == null) {
+        if (clientDocNumber == null) {
             finish()
             return
         }
@@ -70,8 +71,8 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 .show()
         }
 
-        // --- 5. CARGAR DATOS ---
-        loadClientData(docNumber)
+        // --- 5. CARGAR DATOS INICIALES ---
+        loadClientData(clientDocNumber!!)
 
         if (currentClient != null) {
             loadAllMemberships()
@@ -83,7 +84,20 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 val intent = Intent(this, PagoSocioMetodosActivity::class.java)
                 intent.putExtra("MEMBERSHIP_TO_PAY", membership)
                 intent.putExtra("CLIENT_DATA", currentClient)
-                startActivityForResult(intent, REQUEST_CODE_PAYMENT)
+                startActivity(intent)
+            }
+        }
+    }
+
+    // Recargar datos cada vez que la actividad vuelve a ser visible
+    override fun onResume() {
+        super.onResume()
+
+        // Recargar SOLO si ya teníamos un cliente cargado
+        clientDocNumber?.let { doc ->
+            loadClientData(doc)
+            if (currentClient != null) {
+                loadAllMemberships()
             }
         }
     }
@@ -101,11 +115,16 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
     }
 
     private fun loadAllMemberships() {
-        membershipsList.removeAllViews()
+        membershipsList.removeAllViews() // IMPORTANTE: Limpiar lista antes de recargar
+
+        // Resetear estado del botón
+        membershipToPay = null
+        btnContinue.isEnabled = false
+        btnContinue.alpha = 0.5f
 
         val clientId = currentClient!!.clientId
 
-        // Obtener solo las membresías relevantes (no mostrar finalizadas ni vencidas antiguas)
+        // Obtener solo las membresías relevantes
         val allMemberships = dbHelper.getRelevantMembershipsForClient(clientId)
 
         if (allMemberships.isEmpty()) {
@@ -113,16 +132,51 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
             return
         }
 
-        // Limitar a las 3 primeras (ACTIVA + 2 PENDIENTES como máximo)
-        val membershipsToShow = allMemberships.take(3)
+        // Verificar si es socio nuevo (solo tiene 1 cuota PENDIENTE sin startDate)
+        val isNewClient = allMemberships.size == 1 &&
+                allMemberships[0].status == "PENDIENTE" &&
+                (allMemberships[0].startDate.isEmpty() || allMemberships[0].startDate == "null")
 
-        // Agregar cada membresía como una card
-        membershipsToShow.forEachIndexed { index, membership ->
-            addMembershipCard(membership, index == membershipsToShow.size - 1)
+        if (isNewClient) {
+            // Caso especial: Socio nuevo (primera cuota)
+            addFirstMembershipCard(allMemberships[0])
+        } else {
+            // Caso normal: Mostrar hasta 3 cuotas
+            val membershipsToShow = allMemberships.take(3)
+            membershipsToShow.forEach { membership ->
+                addMembershipCard(membership)
+            }
         }
     }
 
-    private fun addMembershipCard(membership: MembershipData, isLast: Boolean) {
+    private fun addFirstMembershipCard(membership: MembershipData) {
+        val inflater = LayoutInflater.from(this)
+        val cardView = inflater.inflate(R.layout.item_membership_card, membershipsList, false)
+
+        val statusIndicator = cardView.findViewById<View>(R.id.statusIndicator)
+        val tvMembershipId = cardView.findViewById<TextView>(R.id.tvMembershipId)
+        val tvStatus = cardView.findViewById<TextView>(R.id.tvStatus)
+        val tvInfo = cardView.findViewById<TextView>(R.id.tvInfo)
+        val tvDaysRemaining = cardView.findViewById<TextView>(R.id.tvDaysRemaining)
+
+        tvMembershipId.text = "PRIMERA CUOTA"
+
+        statusIndicator.backgroundTintList = ContextCompat.getColorStateList(this, R.color.rojo_alerta)
+
+        tvStatus.text = "ESTADO: PENDIENTE DE PAGO"
+        tvStatus.setTextColor(ContextCompat.getColor(this, R.color.rojo_alerta))
+
+        tvInfo.text = "Cuota sin pagar. Puede ser pagada anticipadamente."
+        tvDaysRemaining.visibility = View.GONE
+
+        membershipToPay = membership
+        btnContinue.isEnabled = true
+        btnContinue.alpha = 1.0f
+
+        membershipsList.addView(cardView)
+    }
+
+    private fun addMembershipCard(membership: MembershipData) {
         val inflater = LayoutInflater.from(this)
         val cardView = inflater.inflate(R.layout.item_membership_card, membershipsList, false)
 
@@ -135,12 +189,8 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         // ID de la cuota
         tvMembershipId.text = "CUOTA ID ${membership.membershipId}"
 
-        // [NUEVA LÓGICA CLAVE] Verifica si la cuota PENDIENTE tiene un registro de pago asociado
-        val isPaidInAdvance = membership.status == "PENDIENTE" && membership.paymentId != null
-
         when (membership.status) {
             "ACTIVA" -> {
-                // Círculo verde
                 statusIndicator.backgroundTintList = ContextCompat.getColorStateList(this, R.color.verde_exito)
 
                 tvStatus.text = "ESTADO: ACTIVA"
@@ -148,30 +198,24 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
 
                 tvInfo.text = "PERIODO: ${membership.formattedPeriod}"
 
-                // Mostrar cuándo termina
                 tvDaysRemaining.visibility = View.VISIBLE
                 tvDaysRemaining.text = membership.daysRemainingText.replace("Su cuota actual vence", "Termina")
             }
 
             "PENDIENTE" -> {
-                if (isPaidInAdvance) {
-                    // CASO 1: CUOTA PENDIENTE PAGADA POR ADELANTADO (paymentId != null)
+                if (membership.startDate.isNotEmpty() && membership.startDate != "null") {
+                    // Pendiente pagada
                     statusIndicator.backgroundTintList = ContextCompat.getColorStateList(this, R.color.verde_exito)
 
-                    // Texto corregido para mostrar el estado correcto
-                    tvStatus.text = "ESTADO: PENDIENTE (Pagada por adelantado)"
+                    tvStatus.text = "ESTADO: PENDIENTE (Pagada)"
                     tvStatus.setTextColor(ContextCompat.getColor(this, R.color.verde_exito))
 
-                    tvInfo.text = "Período: ${membership.formattedPeriod}"
+                    tvInfo.text = "PERIODO: ${membership.formattedPeriod}"
 
                     tvDaysRemaining.visibility = View.VISIBLE
                     tvDaysRemaining.text = "Se activará el ${DateUtils.formatShortDate(membership.startDate)}"
-
-                    // NO se permite pagar de nuevo, se asegura que el botón esté deshabilitado
-                    // si no hay una VENCIDA que lo sobrescriba más adelante.
-
                 } else {
-                    // CASO 2: CUOTA PENDIENTE SIN PAGAR (Primera cuota o cuota futura sin pago)
+                    // Pendiente sin pagar
                     statusIndicator.backgroundTintList = ContextCompat.getColorStateList(this, R.color.rojo_alerta)
 
                     tvStatus.text = "ESTADO: PENDIENTE DE PAGO"
@@ -180,7 +224,6 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                     tvInfo.text = "Cuota sin pagar. Puede ser pagada anticipadamente."
                     tvDaysRemaining.visibility = View.GONE
 
-                    // Habilitar el pago para esta cuota PENDIENTE.
                     membershipToPay = membership
                     btnContinue.isEnabled = true
                     btnContinue.alpha = 1.0f
@@ -196,13 +239,10 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
                 tvInfo.text = membership.daysRemainingText.uppercase()
                 tvDaysRemaining.visibility = View.GONE
 
-                // Cuota vencida: habilitar el pago (tiene prioridad).
                 membershipToPay = membership
                 btnContinue.isEnabled = true
                 btnContinue.alpha = 1.0f
             }
-
-            // Se puede añadir un 'else' para cualquier otro estado no esperado (ej. FINALIZADA si se filtra mal).
         }
 
         membershipsList.addView(cardView)
@@ -218,17 +258,4 @@ class PagoSocioCuotaMensualActivity : AppCompatActivity() {
         membershipsList.addView(textView)
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PAYMENT && resultCode == RESULT_OK) {
-            if (currentClient != null) {
-                loadAllMemberships()
-            }
-        }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PAYMENT = 1001
-    }
 }

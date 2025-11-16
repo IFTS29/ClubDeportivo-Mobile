@@ -261,10 +261,10 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
     }
 
     /**
-     * Procesa el pago según el métdo seleccionado
+     * Procesa el pago según el método seleccionado
      */
     private fun procesarPago() {
-        // Validar que se haya seleccionado un métdo de pago
+        // Validar que se haya seleccionado un método de pago
         if (!opEfectivo.isChecked && !opTarjeta.isChecked) {
             Toast.makeText(this, "Por favor seleccione un método de pago", Toast.LENGTH_LONG).show()
             return
@@ -307,7 +307,6 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
                     intent.putExtra("CLIENT_ID", clientData.clientId)
                     intent.putExtra("MEMBERSHIP_ID", membershipToPay.membershipId)
                     startActivity(intent)
-                    setResult(RESULT_OK) // Indicar que el pago fue exitoso
                     finish()
                 } else {
                     Toast.makeText(
