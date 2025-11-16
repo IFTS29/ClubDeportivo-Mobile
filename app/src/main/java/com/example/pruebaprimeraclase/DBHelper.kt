@@ -760,4 +760,333 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     }
     // ===== FIN CODIGO nahuew =========
 
+    // -- codigo Mike -- //
+    /**
+     * Procesa el pago de una cuota mensual de socio.
+     * Maneja toda la lógica de negocio: actualiza estados, crea nuevas cuotas, etc.
+     *
+     * @param membershipId ID de la cuota a pagar (debe estar en estado PENDIENTE o VENCIDA)
+     * @param paymentMethod Método de pago: "EFECTIVO" o "TARJETA"
+     * @param installments Cantidad de cuotas (1, 3 o 6)
+     * @param amount Monto total a pagar (con recargos incluidos)
+     * @return true si el pago se procesó exitosamente, false en caso de error
+     */
+
+    fun procesarPagoCuotaSocio(
+        membershipId: Int,
+        paymentMethod: String,
+        installments: Int,
+        amount: Double
+    ): Boolean {
+        val db = this.writableDatabase
+        db.beginTransaction()
+
+        try {
+            // 1. OBTENER DATOS DE LA MEMBRESÍA A PAGAR
+            val cursor = db.rawQuery(
+                """SELECT clientId, status, startDate, expiryDate, monthlyFee 
+           FROM memberships 
+           WHERE membershipId = ?""",
+                arrayOf(membershipId.toString())
+            )
+
+            if (!cursor.moveToFirst()) {
+                cursor.close()
+                return false // No se encontró la membresía
+            }
+
+            val clientId = cursor.getInt(0)
+            val currentStatus = cursor.getString(1)
+            val currentStartDate = cursor.getString(2)
+            val currentExpiryDate = cursor.getString(3)
+            val monthlyFee = cursor.getDouble(4)
+            cursor.close()
+
+            // 2. VALIDAR QUE LA CUOTA ESTÉ EN ESTADO VÁLIDO PARA PAGAR
+            if (currentStatus != "PENDIENTE" && currentStatus != "VENCIDA") {
+                return false // Solo se pueden pagar cuotas PENDIENTES o VENCIDAS
+            }
+
+            // --- BANDERAS DE LÓGICA DE NEGOCIO ---
+            // Indica si el estado de la membresía debe ser actualizado a ACTIVA
+            val shouldActivateMembership: Boolean
+            // Indica si debemos crear la siguiente cuota PENDIENTE al finalizar el proceso
+            var shouldCreateNextPending: Boolean = false
+
+            // 3. DETERMINAR FECHAS Y ESTADO
+            val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+
+            // Inicializar con valores por defecto (se usarán si se activa la membresía)
+            val newStartDate: String
+            val newExpiryDate: String
+
+            if (currentStatus == "PENDIENTE" && currentStartDate == null) {
+                // CASO 1: PRIMERA CUOTA (Socio Nuevo)
+                newStartDate = today
+                newExpiryDate = DateUtils.addDaysToDate(today, 30)
+                shouldActivateMembership = true
+                shouldCreateNextPending = true // Siempre crea la próxima
+
+            } else if (currentStatus == "PENDIENTE" && currentStartDate != null) {
+                // CASO 2: PAGO ANTICIPADO de cuota futura.
+                // La membresía PERMANECE PENDIENTE.
+                newStartDate = currentStartDate // Mantiene las fechas futuras ya calculadas
+                newExpiryDate = currentExpiryDate
+                shouldActivateMembership = false // NO SE ACTIVA
+                shouldCreateNextPending = false // Ya hemos pagado la próxima cuota, no se crea otra
+
+            } else { // currentStatus == "VENCIDA"
+                // CASO 3: CUOTA VENCIDA
+                newStartDate = today // Recalcula inicio desde hoy
+                newExpiryDate = DateUtils.addDaysToDate(today, 30)
+                shouldActivateMembership = true
+                // La bandera de crear pendiente se gestiona en el paso 6.
+            }
+
+            // 4. ACTUALIZAR LA MEMBRESÍA (Solo si debe activarse)
+            if (shouldActivateMembership) {
+                db.execSQL(
+                    """UPDATE memberships 
+               SET status = 'ACTIVA', 
+                   startDate = ?, 
+                   expiryDate = ?
+               WHERE membershipId = ?""",
+                    arrayOf(newStartDate, newExpiryDate, membershipId.toString())
+                )
+            }
+
+            // 5. CREAR EL REGISTRO DE PAGO
+            // Esto vincula el pago a la membresía (ACTIVA, VENCIDA o PENDIENTE)
+            db.execSQL(
+                """INSERT INTO payments (
+            clientId, 
+            membershipId, 
+            amount, 
+            paymentType, 
+            paymentMethod, 
+            installments, 
+            paymentDate, 
+            dueDate, 
+            paymentStatus
+        ) VALUES (?, ?, ?, 'MENSUAL', ?, ?, ?, ?, 'PAGADO')""",
+                arrayOf(
+                    clientId.toString(),
+                    membershipId.toString(),
+                    amount.toString(),
+                    paymentMethod,
+                    installments.toString(),
+                    today,
+                    today // La fecha de pago es el dueDate para facturación
+                )
+            )
+
+            // 6. CREAR LA SIGUIENTE CUOTA PENDIENTE
+
+            if (shouldCreateNextPending) {
+                // Caso 1: Primera cuota. Siempre crea la siguiente.
+                val nextStartDate = newExpiryDate
+                val nextExpiryDate = DateUtils.addDaysToDate(newExpiryDate, 30)
+
+                db.execSQL(
+                    """INSERT INTO memberships (
+                clientId, startDate, expiryDate, monthlyFee, status
+            ) VALUES (?, ?, ?, ?, 'PENDIENTE')""",
+                    arrayOf(clientId.toString(), nextStartDate, nextExpiryDate, monthlyFee.toString())
+                )
+            } else if (currentStatus == "VENCIDA") {
+                // Caso 3: Cuota VENCIDA. La membresía pasó a ACTIVA (Paso 4).
+                // Verificar si ya existe una PENDIENTE futura (en caso de pagos fuera de término complejos).
+                val pendingCursor = db.rawQuery(
+                    """SELECT membershipId FROM memberships 
+               WHERE clientId = ? AND status = 'PENDIENTE'""",
+                    arrayOf(clientId.toString())
+                )
+
+                // Si NO tiene PENDIENTE, crearla (lógica que ya tenías)
+                if (!pendingCursor.moveToFirst()) {
+                    val nextStartDate = newExpiryDate
+                    val nextExpiryDate = DateUtils.addDaysToDate(newExpiryDate, 30)
+
+                    db.execSQL(
+                        """INSERT INTO memberships (clientId, startDate, expiryDate, monthlyFee, status) 
+                    VALUES (?, ?, ?, ?, 'PENDIENTE')""",
+                        arrayOf(clientId.toString(), nextStartDate, nextExpiryDate, monthlyFee.toString())
+                    )
+                }
+                pendingCursor.close()
+            }
+            // NOTA: Si fue pago anticipado (Caso 2), NO crea otra PENDIENTE.
+
+
+            // 7. ACTUALIZAR ESTADO DEL CLIENTE SI ES PRIMERA CUOTA
+            if (currentStatus == "PENDIENTE" && currentStartDate == null) {
+                db.execSQL(
+                    """UPDATE clients 
+               SET clientStatus = 'ACTIVO', 
+                   cardDelivered = 1
+               WHERE clientId = ?""",
+                    arrayOf(clientId.toString())
+                )
+            }
+
+            db.setTransactionSuccessful()
+            return true
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+
+    /**
+     * Obtiene el último pago de un cliente
+     */
+    fun getLastPaymentByClient(clientId: Int): PaymentData? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """SELECT paymentId, clientId, membershipId, amount, paymentType, 
+                  paymentMethod, installments, paymentDate, dueDate, paymentStatus
+           FROM payments
+           WHERE clientId = ?
+           ORDER BY paymentDate DESC
+           LIMIT 1""",
+            arrayOf(clientId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            val payment = PaymentData(
+                paymentId = cursor.getInt(0),
+                clientId = cursor.getInt(1),
+                membershipId = if (cursor.isNull(2)) null else cursor.getInt(2),
+                amount = cursor.getDouble(3),
+                paymentType = cursor.getString(4),
+                paymentMethod = cursor.getString(5),
+                installments = cursor.getInt(6),
+                paymentDate = cursor.getString(7),
+                dueDate = cursor.getString(8),
+                paymentStatus = cursor.getString(9)
+            )
+            cursor.close()
+            return payment
+        }
+
+        cursor.close()
+        return null
+    }
+
+    /**
+     * Verifica si el cliente tiene el carnet generado
+     */
+    fun isCardDelivered(clientId: Int): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT cardDelivered FROM clients WHERE clientId = ?",
+            arrayOf(clientId.toString())
+        )
+
+        var delivered = false
+        if (cursor.moveToFirst()) {
+            delivered = cursor.getInt(0) == 1
+        }
+        cursor.close()
+        return delivered
+    }
+
+    /**
+     * Obtiene TODAS las membresías de un cliente ordenadas por fecha
+     * Útil para mostrar el historial completo
+     */
+    fun getAllMembershipsForClient(clientId: Int): List<MembershipData> {
+        val db = this.readableDatabase
+        val memberships = mutableListOf<MembershipData>()
+
+        val cursor = db.rawQuery(
+            """SELECT membershipId, clientId, startDate, expiryDate, monthlyFee, status
+           FROM memberships
+           WHERE clientId = ? AND status != 'CANCELADA'
+           ORDER BY 
+               CASE 
+                   WHEN status = 'ACTIVA' THEN 1
+                   WHEN status = 'PENDIENTE' AND startDate IS NOT NULL THEN 2
+                   WHEN status = 'PENDIENTE' THEN 3
+                   WHEN status = 'VENCIDA' THEN 4
+                   WHEN status = 'FINALIZADA' THEN 5
+                   ELSE 6
+               END,
+               COALESCE(startDate, '9999-12-31') ASC""",
+            arrayOf(clientId.toString())
+        )
+
+        while (cursor.moveToNext()) {
+            memberships.add(MembershipData(
+                membershipId = cursor.getInt(0),
+                clientId = cursor.getInt(1),
+                startDate = cursor.getString(2) ?: "",
+                expiryDate = cursor.getString(3) ?: "",
+                monthlyFee = cursor.getDouble(4),
+                status = cursor.getString(5)
+            ))
+        }
+
+        cursor.close()
+        return memberships
+    }
+
+    /**
+     * Obtiene solo las membresías relevantes para mostrar en pantalla
+     * Excluye FINALIZADAS y limita el resultado
+     */
+    // DBHelper.kt
+
+    fun getRelevantMembershipsForClient(clientId: Int): List<MembershipData> {
+        val db = this.readableDatabase
+        val memberships = mutableListOf<MembershipData>()
+
+        // Consulta con LEFT JOIN a payments
+        val cursor = db.rawQuery(
+            """SELECT 
+           m.membershipId, m.clientId, m.startDate, m.expiryDate, m.monthlyFee, m.status, 
+           p.paymentId -- [NUEVO] Obtener el ID de pago si existe
+       FROM memberships m
+       LEFT JOIN payments p ON m.membershipId = p.membershipId AND p.paymentStatus = 'PAGADO'
+       WHERE m.clientId = ? 
+       AND m.status IN ('ACTIVA', 'PENDIENTE', 'VENCIDA')
+       ORDER BY 
+           CASE 
+               WHEN m.status = 'ACTIVA' THEN 1
+               WHEN m.status = 'PENDIENTE' AND m.startDate IS NOT NULL AND m.startDate != '' THEN 2
+               WHEN m.status = 'PENDIENTE' THEN 3
+               WHEN m.status = 'VENCIDA' THEN 4
+               ELSE 5
+           END,
+           COALESCE(m.startDate, '9999-12-31') ASC
+       LIMIT 3""",
+            arrayOf(clientId.toString())
+        )
+
+        while (cursor.moveToNext()) {
+            // El paymentId es la columna 6
+            val paymentIdIndex = 6
+            val paymentId = if (cursor.isNull(paymentIdIndex)) null else cursor.getInt(paymentIdIndex)
+
+            memberships.add(MembershipData(
+                membershipId = cursor.getInt(0),
+                clientId = cursor.getInt(1),
+                startDate = cursor.getString(2) ?: "",
+                expiryDate = cursor.getString(3) ?: "",
+                monthlyFee = cursor.getDouble(4),
+                status = cursor.getString(5),
+                paymentId = paymentId // <--- ¡ASIGNACIÓN DEL NUEVO CAMPO!
+            ))
+        }
+
+        cursor.close()
+        return memberships
+    }
+
+    // -- Fin Código Mike -- //
+
 }
