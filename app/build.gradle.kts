@@ -32,6 +32,7 @@ android {
         // Habilitar Desugaring para usar java.time en minSdk 24
         isCoreLibraryDesugaringEnabled = true
     }
+
     kotlinOptions {
         jvmTarget = "1.8" // Usamos target 1.8 para el desugaring
     }
