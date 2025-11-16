@@ -1,5 +1,8 @@
 package com.example.pruebaprimeraclase
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ClientData(
     // Datos de 'persons'
     val personId: Int, // ID de la tabla persons
@@ -19,4 +22,4 @@ data class ClientData(
     val clientStatus: String?, // puede ser null para "NO SOCIO"
     val registrationDate: String,
     val cardDelivered: Boolean // convertido de Int
-)
+) : Parcelable
