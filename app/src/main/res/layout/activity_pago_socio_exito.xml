@@ -98,6 +98,7 @@
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
+                    android:id="@+id/tvCuotaNumero"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CUOTA N° XXXX"
@@ -106,6 +107,7 @@
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
+                    android:id="@+id/tvCuotaPeriodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SEPTIEMBRE 2025"

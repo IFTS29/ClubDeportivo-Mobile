@@ -304,8 +304,13 @@ class PagoSocioMetodosActivity : AppCompatActivity() {
                 if (success) {
                     // Navegar a pantalla de éxito
                     val intent = Intent(this, PagoSocioExitoActivity::class.java)
-                    intent.putExtra("CLIENT_ID", clientData.clientId)
-                    intent.putExtra("MEMBERSHIP_ID", membershipToPay.membershipId)
+                    // Enviar los datos completos a la pantalla de éxito
+                    intent.putExtra("CLIENT_DATA", clientData)
+                    intent.putExtra("MEMBERSHIP_DATA", membershipToPay)
+                    // (Opcional) Pasar también los datos específicos del pagoº
+                    // intent.putExtra("FINAL_AMOUNT", finalAmount)
+                    // intent.putExtra("PAYMENT_METHOD", paymentMethod)
+
                     startActivity(intent)
                     setResult(RESULT_OK) // Indicar que el pago fue exitoso
                     finish()
