@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.util.Locale
 import android.content.ContentValues
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 6){
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 7){
 
     override fun onCreate(db: SQLiteDatabase) {
         // 1. Usuarios del Sistema (Admin, Empleado)

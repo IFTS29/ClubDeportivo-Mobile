@@ -167,6 +167,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
             // Instanciar tu DBHelper
             val dbHelper = DBHelper(this)
 
+
             // 4. Intentar guardar el cliente en la BD
             val success = dbHelper.addClient(
                 firstName = nombre,
@@ -213,20 +214,11 @@ class RegistrarClientes2Activity : AppCompatActivity() {
                 intent.putExtra("tipo_cliente", tipoClienteSeleccionado)
                 startActivity(intent)
 
-
-                // Pasar TODOS los datos recolectados a la siguiente actividad
-                intent.putExtra("dni", dni) // El DNI original
-                intent.putExtra("nombre", nombre)
-                intent.putExtra("apellido", apellido)
-                intent.putExtra("telefono", telefono)
-                intent.putExtra("email", email)
-                intent.putExtra("direccion", direccion)
-                intent.putExtra("aptoMedico", aptoMedico) // Pasa el Boolean
-                intent.putExtra("tipo_cliente", tipoClienteSeleccionado)
-
-                // NOTA: Aquí también deberías pasar la FECHA DE NACIMIENTO (ver abajo)
-
-                startActivity(intent)
+                Toast.makeText(
+                    this,
+                    "Error al registrar. Es posible que el DNI ya exista.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
         }
