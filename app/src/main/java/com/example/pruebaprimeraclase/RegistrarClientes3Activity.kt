@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.random.Random
 
 class RegistrarClientes3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,8 +14,11 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar_clientes3)
 
-        // Obtener datos pasados desde la pantalla anterior
+        //  Obtener datos pasados desde la pantalla anterior
+        val clientId = intent.getLongExtra("clientId", -1L)
         val dni = intent.getStringExtra("dni") ?: ""
+        val nombre = intent.getStringExtra("nombre") ?: "Nombre"
+        val apellido = intent.getStringExtra("apellido") ?: "Apellido"
         val tipoCliente = intent.getStringExtra("tipo_cliente") ?: ""
 
         // Referencias a los elementos del layout
@@ -28,12 +30,21 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         val tvDocumento = findViewById<TextView>(R.id.tvDocumento)
         val tvSocioNumero = findViewById<TextView>(R.id.tvSocioNumero)
 
-        // Actualizar los datos en la pantalla
-        updateRegistroData(dni, tipoCliente, tvNombreApellido, tvDocumento, tvSocioNumero)
+        // ⭐ Actualizar los datos en la pantalla (ahora con clientId)
+        updateRegistroData(
+            dni = dni,
+            tipoCliente = tipoCliente,
+            nombre = nombre,
+            apellido = apellido,
+            clientId = clientId, //
+            tvNombreApellido = tvNombreApellido,
+            tvDocumento = tvDocumento,
+            tvSocioNumero = tvSocioNumero
+        )
 
         // Funcionalidad del botón Atrás
         btnBack.setOnClickListener {
-            finish() // Volver a la pantalla anterior
+            finish()
         }
 
         // Funcionalidad del botón Menú
@@ -45,7 +56,6 @@ class RegistrarClientes3Activity : AppCompatActivity() {
 
         // Funcionalidad del botón Pagar
         btnPagar.setOnClickListener {
-            // Navegar a la pantalla de registro de pagos
             val intent = Intent(this, RegistrarPagosActivity::class.java)
             intent.putExtra("dni", dni)
             intent.putExtra("tipo_cliente", tipoCliente)
@@ -60,19 +70,25 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         }
     }
 
-    private fun updateRegistroData(dni: String, tipoCliente: String, tvNombreApellido: TextView, tvDocumento: TextView, tvSocioNumero: TextView) {
-        // Datos mock para mostrar
-        val nombresMock = arrayOf("Roberto Ignacio", "María Elena", "Carlos Alberto", "Ana Sofía", "Luis Fernando")
-        val apellidosMock = arrayOf("Alvarez", "González", "Rodríguez", "Martínez", "López")
-
-        val nombreCompleto = "${nombresMock.random()} ${apellidosMock.random()}"
-        val numeroSocio = Random.nextInt(1000, 9999)
+    // ⭐ Función actualizada con clientId
+    private fun updateRegistroData(
+        dni: String,
+        tipoCliente: String,
+        nombre: String,
+        apellido: String,
+        clientId: Long,
+        tvNombreApellido: TextView,
+        tvDocumento: TextView,
+        tvSocioNumero: TextView
+    ) {
+        val nombreCompleto = "$nombre $apellido"
 
         tvNombreApellido.text = nombreCompleto
         tvDocumento.text = "DOC: $dni"
 
+        // ⭐ Usar clientId REAL en lugar de número random
         if (tipoCliente == "Socio") {
-            tvSocioNumero.text = "SOCIO NRO: $numeroSocio"
+            tvSocioNumero.text = "SOCIO NRO: $clientId"
         } else {
             tvSocioNumero.text = "CLIENTE NO SOCIO"
         }

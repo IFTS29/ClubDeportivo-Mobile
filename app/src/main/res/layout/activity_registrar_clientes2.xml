@@ -163,6 +163,20 @@
                     android:textStyle="bold"
                     android:minHeight="48dp"/>
 
+                <EditText
+                    android:id="@+id/etFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="FECHA DE NACIMIENTO"
+                    android:inputType="date"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:minHeight="48dp"/>
+
                 <Spinner
                     android:id="@+id/spinnerTipoCliente"
                     android:layout_width="match_parent"
@@ -172,8 +186,6 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:layout_marginBottom="16dp"/>
-
-
 
             </LinearLayout>
 

@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/gradient_green_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="32dp">
+        android:paddingBottom="36dp">
 
-        <!-- BARRA DE NAVEGACION SUPERIOR-->
         <LinearLayout
             android:id="@+id/nav_bar"
             android:layout_width="match_parent"
@@ -25,7 +25,6 @@
             android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
-            <!-- Boton Volver -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="48dp"
@@ -34,14 +33,13 @@
                 android:background="@drawable/icon_back_bggreen"
                 app:tint="@android:color/white"
                 android:contentDescription="Volver"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
-            <!-- Menú hamburgesa-->
             <ImageButton
                 android:id="@+id/btnMenu"
                 android:layout_width="48dp"
@@ -50,12 +48,11 @@
                 android:background="@drawable/icon_menu_bg"
                 app:tint="@color/black"
                 android:contentDescription="Menú"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
         </LinearLayout>
 
 
-        <!-- SECCION DE COMPROBANTE-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,13 +62,12 @@
             android:paddingTop="20dp"
             android:gravity="center_horizontal">
 
-            <!-- TITULO: Comprobante de Pago -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COMPROBANTE DE PAGO"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:paddingTop="12dp"
@@ -80,7 +76,6 @@
                 android:letterSpacing="0.08"
                 android:background="@null"/>
 
-            <!--Card1: Encabezado comproabante -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,9 +88,8 @@
                 android:columnCount="2"
                 android:rowCount="2">
 
-                <!--Logo Club -->
                 <ImageView
-                    android:id="@+id/logo_club"
+                    android:id="@+id/ivLogo"
                     android:layout_width="97dp"
                     android:layout_height="60dp"
                     android:layout_row="0"
@@ -105,20 +99,20 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/logo_club" />
 
-                <!--Fecha actual -->
                 <TextView
+                    android:id="@+id/tvReceiptDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_row="0"
                     android:layout_column="1"
                     android:layout_gravity="end|center_vertical"
-                    android:text="12/06/2025"
+                    android:text="cargando..."
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!--Nombre Club -->
                 <TextView
+                    android:id="@+id/tvClubName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Club Deportivo"
@@ -128,11 +122,11 @@
                     android:layout_column="0"
                     android:layout_gravity="start|bottom"/>
 
-                <!--Numero de Comprobante -->
                 <TextView
+                    android:id="@+id/tvReceiptNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nro Comprobante"
+                    android:text="Nro: cargando..."
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_row="1"
@@ -142,7 +136,6 @@
             </GridLayout>
 
 
-            <!--Card2: Datos del Pago -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,17 +144,15 @@
                 android:padding="24dp"
                 android:layout_marginBottom="60dp">
 
-                <!--Nombre Socio -->
                 <TextView
+                    android:id="@+id/tvClientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mario Dominguez"
+                    android:text="Cargando..."
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
-
-                <!--Numero de Socio -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,20 +161,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nro de Cliente no asociado:"
+                        android:text="Nro de Cliente no asociado: "
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
+                        android:id="@+id/tvClientId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1430"
+                        android:text="..."
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
-
-                <!--Fecha de Pago -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,20 +182,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha de Pago:"
+                        android:text="Fecha de Pago: "
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
+                        android:id="@+id/tvPaymentDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12/06/2025"
+                        android:text="..."
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
-
-                <!--Forma de Pago -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,64 +203,37 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Forma de Pago:"
+                        android:text="Forma de Pago: "
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
+                        android:id="@+id/tvPaymentMethod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Efectivo"
+                        android:text="..."
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-                <!--Nombre Actividad -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actividades:"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
                 <LinearLayout
+                    android:id="@+id/llActivityList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_marginBottom="8dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Actividad:"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:layout_marginEnd="4dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Body Pump"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
                 </LinearLayout>
 
-                <!--Fecha Actividad -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fecha Actividad:"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:layout_marginEnd="4dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12/09/2025 15:00hs"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <!--Monto de Pago-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -279,9 +241,10 @@
                     android:gravity="end"
                     android:layout_marginTop="16dp">
                     <TextView
+                        android:id="@+id/tvTotalAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monto: $ 30.000"
+                        android:text="Monto: $ ..."
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -295,9 +258,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-            <!--Boton IMPRIMIR-->
             <Button
-                android:id="@+id/btnImprimir"
+                android:id="@+id/btnPrint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/btn_verde_oscuro"
@@ -309,12 +271,11 @@
                 android:text="IMPRIMIR"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 />
 
         </LinearLayout>
-
     </LinearLayout>
 
 </ScrollView>
