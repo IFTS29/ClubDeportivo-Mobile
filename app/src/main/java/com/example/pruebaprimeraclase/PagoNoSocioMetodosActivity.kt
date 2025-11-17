@@ -197,6 +197,11 @@ class PagoNoSocioMetodosActivity : AppCompatActivity() {
                     // Navegación según el resultado
                     if (newPaymentId != -1L) {
                         val intent = Intent(this, PagoNoSocioExitoActivity::class.java)
+
+                        // Información para la pantalla de éxito
+                        intent.putExtra("PAYMENT_ID", newPaymentId)
+                        intent.putExtra("CLIENT_DOC", clientDoc)
+
                         startActivity(intent)
                         finish()
                     } else {

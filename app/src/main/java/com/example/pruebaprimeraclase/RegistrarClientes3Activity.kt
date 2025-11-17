@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
+import android.widget.Toast
 
 class RegistrarClientes3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,10 @@ class RegistrarClientes3Activity : AppCompatActivity() {
 
         // Obtener datos pasados desde la pantalla anterior
         val dni = intent.getStringExtra("dni") ?: ""
+        val nombre = intent.getStringExtra("nombre") ?: "Nombre"
+        val apellido = intent.getStringExtra("apellido") ?: "Apellido"
         val tipoCliente = intent.getStringExtra("tipo_cliente") ?: ""
+
 
         // Referencias a los elementos del layout
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
@@ -29,7 +33,7 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         val tvSocioNumero = findViewById<TextView>(R.id.tvSocioNumero)
 
         // Actualizar los datos en la pantalla
-        updateRegistroData(dni, tipoCliente, tvNombreApellido, tvDocumento, tvSocioNumero)
+        updateRegistroData(dni, tipoCliente, nombre, apellido, tvNombreApellido, tvDocumento, tvSocioNumero)
 
         // Funcionalidad del botón Atrás
         btnBack.setOnClickListener {
@@ -60,12 +64,8 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         }
     }
 
-    private fun updateRegistroData(dni: String, tipoCliente: String, tvNombreApellido: TextView, tvDocumento: TextView, tvSocioNumero: TextView) {
-        // Datos mock para mostrar
-        val nombresMock = arrayOf("Roberto Ignacio", "María Elena", "Carlos Alberto", "Ana Sofía", "Luis Fernando")
-        val apellidosMock = arrayOf("Alvarez", "González", "Rodríguez", "Martínez", "López")
-
-        val nombreCompleto = "${nombresMock.random()} ${apellidosMock.random()}"
+    private fun updateRegistroData(dni: String, tipoCliente: String, nombre: String, apellido: String, tvNombreApellido: TextView, tvDocumento: TextView, tvSocioNumero: TextView) {
+        val nombreCompleto = "$nombre $apellido"
         val numeroSocio = Random.nextInt(1000, 9999)
 
         tvNombreApellido.text = nombreCompleto
