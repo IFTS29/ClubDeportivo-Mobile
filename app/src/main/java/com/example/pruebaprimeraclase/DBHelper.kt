@@ -572,7 +572,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             val clientId = db.insert("clients", null, clientValues)
 
             if (clientId == -1L) {
-                // Si falla la inserción de cliente, hacer rollback
+                // Si falla la inserción de cliente
                 throw Exception("Error al insertar en la tabla clients")
             }
 
@@ -587,8 +587,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             // Finalizar la transacción. Se comitea si fue successful, o se revierte si no.
             db.endTransaction()
         }
-
-        // Devolver true si todo salió bien, false si hubo un error
         return success
     // ===== FIN CODIGO nahuew =========
         }

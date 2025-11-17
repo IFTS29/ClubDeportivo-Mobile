@@ -65,7 +65,6 @@ class RegistrarClientes3Activity : AppCompatActivity() {
     }
 
     private fun updateRegistroData(dni: String, tipoCliente: String, nombre: String, apellido: String, tvNombreApellido: TextView, tvDocumento: TextView, tvSocioNumero: TextView) {
-
         val nombreCompleto = "$nombre $apellido"
         val numeroSocio = Random.nextInt(1000, 9999)
 
