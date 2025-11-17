@@ -700,6 +700,67 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return db.insert("paymentDetails", null, values)
     }
 
+    // Obtener las actividades diarias recién pagadas
+    fun getActivitiesForPayment(paymentId: Long): List<ActivityData> {
+        val db = readableDatabase
+        val activityList = mutableListOf<ActivityData>()
+
+        // Se obtienen las actividades vinculadas al id de pago
+        val cursor = db.rawQuery(
+            """SELECT a.activityId, a.activityName, a.activityTime, a.cost
+               FROM activities a
+               INNER JOIN activityRegistrations ar ON a.activityId = ar.activityId
+               INNER JOIN paymentDetails pd ON ar.activityRegistrationId = pd.activityRegistrationId
+               WHERE pd.paymentId = ?""",
+            arrayOf(paymentId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val activity = ActivityData(
+                    activityId = cursor.getInt(0),
+                    activityName = cursor.getString(1),
+                    activityTime = cursor.getString(2),
+                    cost = cursor.getDouble(3)
+                )
+                activityList.add(activity)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return activityList
+    }
+
+    // Obtener los datos del pago (a partir de su id)
+    fun getPaymentById(paymentId: Long): PaymentData? {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            """SELECT paymentId, clientId, membershipId, amount, paymentType, 
+                      paymentMethod, installments, paymentDate, dueDate, paymentStatus
+               FROM payments
+               WHERE paymentId = ?""",
+            arrayOf(paymentId.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            val payment = PaymentData(
+                paymentId = cursor.getInt(0),
+                clientId = cursor.getInt(1),
+                membershipId = if (cursor.isNull(2)) null else cursor.getInt(2),
+                amount = cursor.getDouble(3),
+                paymentType = cursor.getString(4),
+                paymentMethod = cursor.getString(5),
+                installments = cursor.getInt(6),
+                paymentDate = cursor.getString(7),
+                dueDate = cursor.getString(8),
+                paymentStatus = cursor.getString(9)
+            )
+            cursor.close()
+            return payment
+        }
+        cursor.close()
+        return null
+    }
+
 
     // ====== CODIGO nahuw ======
 
@@ -969,7 +1030,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             // 8. ACTUALIZAR ESTADO DEL CLIENTE SI ES PRIMERA CUOTA
             if (currentStatus == "PENDIENTE" &&
                 (currentStartDate == null || currentStartDate.isEmpty() || currentStartDate == "null") &&
-                !hasActiveMembership) {
+                !hasActiveMembership
+            ) {
                 db.execSQL(
                     """UPDATE clients 
                    SET clientStatus = 'ACTIVO', 
@@ -1018,15 +1080,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         )
 
         if (cursorCurrent.moveToFirst()) {
-            memberships.add(MembershipData(
-                membershipId = cursorCurrent.getInt(0),
-                clientId = cursorCurrent.getInt(1),
-                startDate = cursorCurrent.getString(2) ?: "",
-                expiryDate = cursorCurrent.getString(3) ?: "",
-                monthlyFee = cursorCurrent.getDouble(4),
-                status = cursorCurrent.getString(5),
-                paymentId = null
-            ))
+            memberships.add(
+                MembershipData(
+                    membershipId = cursorCurrent.getInt(0),
+                    clientId = cursorCurrent.getInt(1),
+                    startDate = cursorCurrent.getString(2) ?: "",
+                    expiryDate = cursorCurrent.getString(3) ?: "",
+                    monthlyFee = cursorCurrent.getDouble(4),
+                    status = cursorCurrent.getString(5),
+                    paymentId = null
+                )
+            )
         }
         cursorCurrent.close()
 
@@ -1050,15 +1114,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         )
 
         if (cursorPending.moveToFirst()) {
-            memberships.add(MembershipData(
-                membershipId = cursorPending.getInt(0),
-                clientId = cursorPending.getInt(1),
-                startDate = cursorPending.getString(2) ?: "",
-                expiryDate = cursorPending.getString(3) ?: "",
-                monthlyFee = cursorPending.getDouble(4),
-                status = cursorPending.getString(5),
-                paymentId = null
-            ))
+            memberships.add(
+                MembershipData(
+                    membershipId = cursorPending.getInt(0),
+                    clientId = cursorPending.getInt(1),
+                    startDate = cursorPending.getString(2) ?: "",
+                    expiryDate = cursorPending.getString(3) ?: "",
+                    monthlyFee = cursorPending.getDouble(4),
+                    status = cursorPending.getString(5),
+                    paymentId = null
+                )
+            )
         }
         cursorPending.close()
 
@@ -1123,4 +1189,31 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
 // -- Fin Código Mike -- //
 
+    fun getMembershipsByExpiryPeriod(startDate: String, endDate: String): List<MembershipData> {
+        val db = this.readableDatabase
+        val memberships = mutableListOf<MembershipData>()
+        val cursor = db.rawQuery(
+            """
+                SELECT membershipId, clientId, startDate, expiryDate, monthlyFee, status
+                FROM memberships
+                WHERE expiryDate BETWEEN ? AND ?
+                AND status != 'CANCELADA'
+            """.trimIndent(),
+            arrayOf(startDate, endDate)
+        )
+        while (cursor.moveToNext()) {
+            memberships.add(
+                MembershipData(
+                    membershipId = cursor.getInt(0),
+                    clientId = cursor.getInt(1),
+                    startDate = cursor.getString(2) ?: "",
+                    expiryDate = cursor.getString(3) ?: "",
+                    monthlyFee = cursor.getDouble(4),
+                    status = cursor.getString(5)
+                )
+            )
+        }
+        cursor.close()
+        return memberships
+    }
 }
