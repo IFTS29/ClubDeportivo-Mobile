@@ -63,11 +63,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VENCIMIENTOS DEL DÍA"
+                android:text="PERÍODO DE VENCIMIENTO"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="8dp"
                 android:letterSpacing="0.08"/>
 
             <Button
@@ -75,7 +75,7 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/card_bg"
                 app:backgroundTint="#E0E0E0"
                 android:drawableEnd="@drawable/icon_down"
@@ -86,11 +86,20 @@
                 android:paddingEnd="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="PERÍODO DE VENCIMIENTO"
+                android:text="Seleccionar fecha"
                 android:textColor="#0D3D5C"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textAllCaps="false"/>
+
+            <TextView
+                android:id="@+id/tvFechaSeleccionada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha: Día de hoy"
+                android:textColor="#0D3D5C"
+                android:textSize="15sp"
+                android:layout_marginBottom="16dp"/>
 
             <LinearLayout
                 android:id="@+id/vencimiento_list_card"
@@ -119,25 +128,16 @@
                     android:background="#D0D0D0"
                     android:layout_marginBottom="16dp"/>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvVencimientos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-                    <include layout="@layout/list_item_vencimiento" />
-
-                </LinearLayout>
+                    android:paddingBottom="8dp"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical"/>
 
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

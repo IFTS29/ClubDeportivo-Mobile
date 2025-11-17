@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="@drawable/gradient_blue_bg">
 
     <LinearLayout
@@ -34,7 +35,7 @@
                 android:background="@drawable/icon_back_bgblue"
                 app:tint="@android:color/white"
                 android:contentDescription="Cerrar"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
             <Space
                 android:layout_width="0dp"
@@ -50,7 +51,7 @@
                 android:background="@drawable/icon_menu_bg"
                 app:tint="@color/black"
                 android:contentDescription="Menú"
-                android:padding="8dp"/>
+                android:padding="15dp"/>
 
         </LinearLayout>
 
@@ -89,14 +90,15 @@
 
                 <!-- BIENVENIDO-->
                 <TextView
+                    android:id="@+id/tvBienvenida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="32dp"
                     android:layout_marginTop="24dp"
-                    android:text="¡Bienvenido!"
+                    android:text="@string/mensaje_bienvenida"
                     android:textColor="@android:color/black"
-                    android:textSize="28sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -131,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:text="Registro de Clientes"
                             android:textColor="@android:color/white"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -162,7 +164,7 @@
                             android:layout_height="wrap_content"
                             android:text="Registro de Pagos"
                             android:textColor="@android:color/white"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -193,7 +195,7 @@
                             android:layout_height="wrap_content"
                             android:text="Listado Vencimientos"
                             android:textColor="@android:color/white"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:gravity="center"/>
                     </LinearLayout>
