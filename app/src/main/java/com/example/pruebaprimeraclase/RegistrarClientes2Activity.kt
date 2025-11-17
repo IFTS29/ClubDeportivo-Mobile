@@ -4,13 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
+<<<<<<< HEAD
 import android.widget.CheckBox
 import android.widget.EditText
+=======
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+<<<<<<< HEAD
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -34,6 +38,14 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar_clientes2)
+=======
+
+class RegistrarClientes2Activity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_registrar_clientes_2)
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
 
         // Obtener el DNI pasado desde la pantalla anterior
         val dni = intent.getStringExtra("dni")
@@ -41,6 +53,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         // Referencias a los elementos del layout
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
         val btnMenu = findViewById<ImageButton>(R.id.btnMenu)
+<<<<<<< HEAD
         btnContinuar = findViewById<Button>(R.id.btnContinuar)
         spinnerTipoCliente = findViewById<Spinner>(R.id.spinnerTipoCliente)
         etDni = findViewById<EditText>(R.id.etDni)
@@ -53,6 +66,13 @@ class RegistrarClientes2Activity : AppCompatActivity() {
 
         // Configurar el Spinner con las opciones
         val tiposCliente = arrayOf("Seleccionar tipo Cliente", "Socio", "No Socio")
+=======
+        val btnContinuar = findViewById<Button>(R.id.btnContinuar)
+        val spinnerTipoCliente = findViewById<Spinner>(R.id.spinnerTipoCliente)
+
+        // Configurar el Spinner con las opciones
+        val tiposCliente = arrayOf("Seleccionar tipo", "Socio", "No Socio")
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, tiposCliente)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipoCliente.adapter = adapter
@@ -69,6 +89,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
             finish()
         }
 
+<<<<<<< HEAD
         // Rellenar el DNI y desabilitarlo
         if (dni != null) {
             etDni.setText(dni)
@@ -142,16 +163,27 @@ class RegistrarClientes2Activity : AppCompatActivity() {
             }
 
 
+=======
+        // Funcionalidad del botón Continuar
+        btnContinuar.setOnClickListener {
+            val tipoClienteSeleccionado = spinnerTipoCliente.selectedItem.toString()
+            
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
             if (tipoClienteSeleccionado == "Seleccionar tipo") {
                 Toast.makeText(this, "Por favor seleccione un tipo de cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
             // Navegar a la pantalla de confirmación (Registro 3)
             val intent = Intent(this, RegistrarClientes3Activity::class.java)
             intent.putExtra("dni", dni)
             intent.putExtra("tipo_cliente", tipoClienteSeleccionado)
             startActivity(intent)
+<<<<<<< HEAD
 
 
             // Pasar TODOS los datos recolectados a la siguiente actividad
@@ -193,3 +225,8 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         btnContinuar.isEnabled = camposTextoCompletos && tipoClienteValido
     }
 }
+=======
+        }
+    }
+}
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9

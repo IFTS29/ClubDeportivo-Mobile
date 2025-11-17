@@ -27,6 +27,7 @@ class ListarVencimientosDiaActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_listar_vencimientos_dia)
 
+<<<<<<< HEAD
         dbHelper = DBHelper(this)
         rvVencimientos = findViewById(R.id.rvVencimientos)
         rvVencimientos.layoutManager = LinearLayoutManager(this)
@@ -36,17 +37,32 @@ class ListarVencimientosDiaActivity : AppCompatActivity() {
         val btnPeriodoVencimiento = findViewById<Button>(R.id.btnPeriodoVencimiento)
         val tvFechaSeleccionada = findViewById<android.widget.TextView>(R.id.tvFechaSeleccionada)
 
+=======
+        // Referencias a los elementos del layout
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        val btnMenu = findViewById<ImageButton>(R.id.btnMenu)
+        val btnPeriodoVencimiento = findViewById<Button>(R.id.btnPeriodoVencimiento)
+        val vencimientoListCard = findViewById<LinearLayout>(R.id.vencimiento_list_card)
+
+        // Funcionalidad del botón Atrás
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
         btnBack.setOnClickListener {
             val intent = Intent(this, MenuPrincipalActivity::class.java)
             startActivity(intent)
             finish()
         }
+<<<<<<< HEAD
+=======
+
+        // Funcionalidad del botón Menú
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
         btnMenu.setOnClickListener {
             val intent = Intent(this, MenuPrincipalActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+<<<<<<< HEAD
         btnPeriodoVencimiento.setOnClickListener {
             showDateRangePicker { start, end ->
                 startDate = start
@@ -136,5 +152,48 @@ class ListarVencimientosDiaActivity : AppCompatActivity() {
                 onDatesSelected(start, end)
             }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
+=======
+        // Funcionalidad del botón Período de Vencimiento
+        btnPeriodoVencimiento.setOnClickListener {
+            Toast.makeText(this, "Seleccionar período de vencimiento", Toast.LENGTH_SHORT).show()
+            // Aquí se podría implementar un diálogo para seleccionar el período
+        }
+
+        // Configurar clicks en los elementos de la lista
+        setupListItemClicks(vencimientoListCard)
+    }
+
+    private fun setupListItemClicks(parentLayout: LinearLayout) {
+        // Buscar el LinearLayout que contiene los elementos include
+        for (i in 0 until parentLayout.childCount) {
+            val child = parentLayout.getChildAt(i)
+            
+            // Si es un LinearLayout (que contiene los elementos de la lista)
+            if (child is LinearLayout) {
+                // Configurar click listener para cada elemento hijo
+                for (j in 0 until child.childCount) {
+                    val listItem = child.getChildAt(j)
+                    
+                    // Configurar click listener para cada elemento
+                    listItem.setOnClickListener {
+                        // Obtener el ID del socio desde el TextView
+                        val socioIdTextView = listItem.findViewById<android.widget.TextView>(R.id.tvSocioId)
+                        val socioId = socioIdTextView?.text?.toString() ?: "43474085"
+                        
+                        // Navegar a la pantalla de detalle de vencimiento
+                        val intent = Intent(this, VencimientoDetalleActivity::class.java)
+                        intent.putExtra("socio_id", socioId)
+                        intent.putExtra("apellido_nombre", "APELLIDO NOMBRE")
+                        intent.putExtra("documento", socioId)
+                        intent.putExtra("fecha_inscripcion", "XX/XX/XX")
+                        intent.putExtra("periodo", "SEPT 2025")
+                        intent.putExtra("importe", "XXXXXXX")
+                        intent.putExtra("estado", "IMPAGO")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
     }
 }

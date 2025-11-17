@@ -1,5 +1,6 @@
     package com.example.pruebaprimeraclase
 
+<<<<<<< HEAD
     import android.content.Intent
     import android.content.res.ColorStateList
     import android.graphics.Typeface
@@ -190,7 +191,28 @@
                     }
                 }
             }
+=======
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
 
 
         }
+<<<<<<< HEAD
     }
+=======
+
+        val btnContinuar = findViewById< Button>(R.id.btnContinuar)
+        btnContinuar.setOnClickListener {
+            val intent = Intent(this, PagarCuotaMensualActivity::class.java)
+            startActivity(intent)
+        }
+    }
+}
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9

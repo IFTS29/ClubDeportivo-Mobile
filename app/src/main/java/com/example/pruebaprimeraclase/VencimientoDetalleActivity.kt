@@ -47,18 +47,31 @@ class VencimientoDetalleActivity : AppCompatActivity() {
         // Funcionalidad del botón Pagar
         btnPagar.setOnClickListener {
             Toast.makeText(this, "Procesando pago para socio: $socioId", Toast.LENGTH_LONG).show()
+<<<<<<< HEAD
 
             // Navegar a la pantalla de métodos de pago del socio
             val intent = Intent(this, PagoSocioMetodosActivity::class.java)
+=======
+            
+            // Navegar a la pantalla de registro de pagos
+            val intent = Intent(this, RegistrarPagosActivity::class.java)
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
             intent.putExtra("socio_id", socioId)
             startActivity(intent)
         }
     }
 
+<<<<<<< HEAD
     private fun updateVencimientoDetails(apellidoNombre: String, documento: String, socioId: String,
                                          fechaInscripcion: String, periodo: String, importe: String, estado: String) {
         // Buscar y actualizar los TextViews en el layout
         val cardLayout = findViewById<android.widget.LinearLayout>(R.id.vencimiento_detail_card)
+=======
+    private fun updateVencimientoDetails(apellidoNombre: String, documento: String, socioId: String, 
+                                       fechaInscripcion: String, periodo: String, importe: String, estado: String) {
+        // Buscar y actualizar los TextViews en el layout
+        val cardLayout = findViewById<android.widget.LinearLayout>(R.id.vencimiento_detail_card) 
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
             ?: return // Si no encuentra el card, salir
 
         // Actualizar cada TextView con los datos correspondientes

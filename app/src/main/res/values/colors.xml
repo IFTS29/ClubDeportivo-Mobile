@@ -45,4 +45,11 @@
     <color name="gradient_green_start">#bee1cc</color>
     <color name="gradient_green_end">#0A9F46</color>
 
+    <!-- Nuestros colores personalizados -->
+    <color name="azul_oscuro">#1B4B5A</color>
+    <color name="morado_oscuro">#3D2E5C</color>
+    <color name="gris_claro">#E8E8E8</color>
+    <!-- <color name="azul_boton">#0D3D5C</color> -->
+    <color name="azul_boton">#3F51B5</color>
+
 </resources>

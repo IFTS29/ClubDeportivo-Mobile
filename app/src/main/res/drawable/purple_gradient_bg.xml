@@ -2,8 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <gradient
+<<<<<<< HEAD:app/src/main/res/drawable/gradient_purple_bg.xml
         android:angle="90"
         android:startColor="@color/gradient_purple_start"
         android:endColor="@color/gradient_purple_end"
+=======
+        android:angle="270"
+        android:startColor="#51188E"
+        android:endColor="#989899"
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9:app/src/main/res/drawable/purple_gradient_bg.xml
         android:type="linear" />
 </shape>

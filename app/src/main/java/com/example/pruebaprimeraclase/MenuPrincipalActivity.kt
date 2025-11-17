@@ -2,11 +2,15 @@ package com.example.pruebaprimeraclase
 
 import android.content.Intent
 import android.os.Bundle
+<<<<<<< HEAD
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 
+=======
+import android.widget.Button
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -16,6 +20,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_principal)
 
+<<<<<<< HEAD
         // capturo el msj de bienvenida, creo la variable usuario
         val tvBienvenida = findViewById<TextView>(R.id.tvBienvenida)
 
@@ -49,18 +54,21 @@ class MenuPrincipalActivity : AppCompatActivity() {
         }
 
         val btnRegistroClientes = findViewById<LinearLayout>(R.id.btnRegistroClientes)
+=======
+        val btnRegistroClientes = findViewById<Button>(R.id.btnRegistroClientes)
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
         btnRegistroClientes.setOnClickListener {
             val intent = Intent(this, RegistrarClientesActivity::class.java)
             startActivity(intent)
         }
 
-        val btnRegistroPagos = findViewById<LinearLayout>(R.id.btnRegistroPagos)
+        val btnRegistroPagos = findViewById<Button>(R.id.btnRegistroPagos)
         btnRegistroPagos.setOnClickListener {
             val intent = Intent(this, RegistrarPagosActivity::class.java)
             startActivity(intent)
         }
 
-        val btnListadoVencimientos = findViewById<LinearLayout>(R.id.btnListadoVencimientos)
+        val btnListadoVencimientos = findViewById<Button>(R.id.btnListadoVencimientos)
         btnListadoVencimientos.setOnClickListener {
             val intent = Intent(this, ListarVencimientosDiaActivity::class.java)
             startActivity(intent)

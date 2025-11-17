@@ -3,8 +3,15 @@
     android:shape="rectangle">
 
     <gradient
+<<<<<<< HEAD:app/src/main/res/drawable/gradient_blue_bg.xml
         android:angle="90"
         android:startColor="@color/gradient_blue_start"
         android:endColor="@color/gradient_blue_end"
+=======
+        android:angle="135"
+        android:startColor="#1B4B5A"
+        android:endColor="#3D2E5C"
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9:app/src/main/res/drawable/gradient_bg.xml
         android:type="linear" />
+
 </shape>

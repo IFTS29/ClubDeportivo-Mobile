@@ -13,7 +13,11 @@ class RegistrarClientes3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+<<<<<<< HEAD
         setContentView(R.layout.activity_registrar_clientes3)
+=======
+        setContentView(R.layout.activity_registrar_clientes_3)
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
 
         // Obtener datos pasados desde la pantalla anterior
         val dni = intent.getStringExtra("dni") ?: ""
@@ -64,6 +68,7 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         // Datos mock para mostrar
         val nombresMock = arrayOf("Roberto Ignacio", "María Elena", "Carlos Alberto", "Ana Sofía", "Luis Fernando")
         val apellidosMock = arrayOf("Alvarez", "González", "Rodríguez", "Martínez", "López")
+<<<<<<< HEAD
 
         val nombreCompleto = "${nombresMock.random()} ${apellidosMock.random()}"
         val numeroSocio = Random.nextInt(1000, 9999)
@@ -71,6 +76,15 @@ class RegistrarClientes3Activity : AppCompatActivity() {
         tvNombreApellido.text = nombreCompleto
         tvDocumento.text = "DOC: $dni"
 
+=======
+        
+        val nombreCompleto = "${nombresMock.random()} ${apellidosMock.random()}"
+        val numeroSocio = Random.nextInt(1000, 9999)
+        
+        tvNombreApellido.text = nombreCompleto
+        tvDocumento.text = "DOC: $dni"
+        
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
         if (tipoCliente == "Socio") {
             tvSocioNumero.text = "SOCIO NRO: $numeroSocio"
         } else {

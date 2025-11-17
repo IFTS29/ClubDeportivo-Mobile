@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     xmlns:app="http://schemas.android.com/apk/res-auto"
+=======
+    android:id="@+id/itemVencimiento"
+>>>>>>> 42cbc0004576e6ec4457b6b2dd2f5e1de760c5e9
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvSocioId"
