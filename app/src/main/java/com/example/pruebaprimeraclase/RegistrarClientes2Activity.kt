@@ -141,8 +141,7 @@ class RegistrarClientes2Activity : AppCompatActivity() {
         }
 
         btnContinuar.setOnClickListener {
-
-            // Recolectar datos de TODOS los campos
+            // 1. Recolectar datos de TODOS los campos
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
             val telefono = etTelefono.text.toString().trim()
@@ -153,23 +152,22 @@ class RegistrarClientes2Activity : AppCompatActivity() {
             val tipoClienteSeleccionado = spinnerTipoCliente.selectedItem.toString()
             val fechaNac = etFechaNacimiento.text.toString().trim()
 
-            // Validaciones
+            // 2. Validaciones
             if (tipoClienteSeleccionado == "Seleccionar tipo Cliente") {
-                Toast.makeText(this, "Por favor seleccione un tipo de cliente", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Por favor seleccione un tipo de cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            /*if (nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty() || email.isEmpty() || direccion.isEmpty()) {
+            if (nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty() ||
+                email.isEmpty() || direccion.isEmpty() || fechaNac.isEmpty()) {
                 Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }*/
-            // Instanciar tu DBHelper
+            }
+
+            // 3. Instanciar DBHelper y llamar UNA SOLA VEZ a addClient
             val dbHelper = DBHelper(this)
 
-
-            // 4. Intentar guardar el cliente en la BD
-            val success = dbHelper.addClient(
+            val nuevoClientId = dbHelper.addClient(
                 firstName = nombre,
                 lastName = apellido,
                 docNumber = dni,
@@ -178,49 +176,36 @@ class RegistrarClientes2Activity : AppCompatActivity() {
                 email = email,
                 phoneNumber = telefono,
                 medicalCertificate = aptoMedico,
-                clientType = tipoClienteSeleccionado.uppercase() // "Socio" -> "SOCIO"
+                clientType = when(tipoClienteSeleccionado) {
+                    "Socio" -> "SOCIO"
+                    "No Socio" -> "NO SOCIO"
+                    else -> tipoClienteSeleccionado.uppercase()
+                }
             )
 
-            if (success) {
-                // Si se guardó con éxito, NAVEGAR a la pantalla 3
+            // 4. Verificar resultado
+            if (nuevoClientId != -1L) {
+                // ✅ Éxito: Cliente creado
                 Toast.makeText(this, "Cliente registrado con éxito", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, RegistrarClientes3Activity::class.java)
-
-                // Pasa los datos a la Activity 3 para que los muestre
+                intent.putExtra("clientId", nuevoClientId)
                 intent.putExtra("dni", dni)
                 intent.putExtra("nombre", nombre)
                 intent.putExtra("apellido", apellido)
                 intent.putExtra("tipo_cliente", tipoClienteSeleccionado)
-                // Agrega cualquier otro dato que Activity 3 necesite mostrar
 
                 startActivity(intent)
+                finish() // Cerrar esta Activity
 
             } else {
-
-
-                if (tipoClienteSeleccionado == "Seleccionar tipo") {
-                    Toast.makeText(
-                        this,
-                        "Por favor seleccione un tipo de cliente",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-
-                // Navegar a la pantalla de confirmación (Registro 3)
-                val intent = Intent(this, RegistrarClientes3Activity::class.java)
-                intent.putExtra("dni", dni)
-                intent.putExtra("tipo_cliente", tipoClienteSeleccionado)
-                startActivity(intent)
-
+                // ❌ Error: No se pudo crear el cliente
                 Toast.makeText(
                     this,
-                    "Error al registrar. Es posible que el DNI ya exista.",
+                    "Error al registrar. El DNI puede ya existir o hubo un problema con la base de datos.",
                     Toast.LENGTH_LONG
                 ).show()
             }
-
         }
     }
     private fun validarFormulario() {
